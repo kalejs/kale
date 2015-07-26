@@ -5,7 +5,7 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "node src/server.js",
     "test": "./node_modules/.bin/gulp"
   },
   "license": "MIT",
