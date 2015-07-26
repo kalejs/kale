@@ -15,7 +15,6 @@ function _generateMigration(tableName) {
 
   var files = fs.readdirSync(migrationDir);
   var file = _.findLast(files, function(filename) {
-    console.log(`does ${filename} end with '${name}.js'`);
     return _.endsWith(filename, `${name}.js`);
   });
 

@@ -9,11 +9,12 @@ module.exports = function(name) {
   var controllerGenerator = require('./controller');
 
   var underscored = _.str.underscored(name);
-  var camelized = _.str.camelize(underscored);
+  var singular = _.str.inflection.singularize(underscored);
+  var camelized = _.str.camelize(singular);
   var controllerName = _.str.inflection.pluralize(camelized);
 
-  modelGenerator(name);
+  modelGenerator(singular);
   controllerGenerator(controllerName);
 
-  console.log(`${name} scaffolding generated.`);
+  console.log(`Scaffolding generated.`);
 };

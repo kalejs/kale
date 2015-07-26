@@ -82,6 +82,8 @@ module.exports = {
 }
 
 function _indexTemplate(dir) {
+  var files = fs.readdirSync(dir);
+  var requires = [];
   var template = `'use strict';
 
 module.exports = {
@@ -89,35 +91,34 @@ module.exports = {
 };
 `;
 
-  var files = fs.readdirSync(dir);
-  var requires = [];
-
   _.each(files, function(file) {
     if (_.str.isBlank(file) || file === 'index.js' || _.str.startsWith(file, '.')) {
       return;
     }
 
     var name = file.split('.')[0];
-    var className = _.str.classify(name);
-    requires.push(`  ${className}: require('./${name}'),`);
+    var camelizedName = _.str.camelize(name);
+    requires.push(`  ${camelizedName}: require('./${name}'),`);
   });
 
   return template.replace('[FILES]', requires.join('\n'));
 }
 
-function _routerTemplate(plural) {
+function _routerTemplate(camelized) {
+  var dasherized = _.str.dasherize(camelized);
+
   return `
-router.get('/${plural}', controllers.${plural}.index);
-router.get('/${plural}/:id', controllers.${plural}.show);
-router.post('/${plural}', controllers.${plural}.create);
-router.put('/${plural}/:id', controllers.${plural}.update);
-router.del('/${plural}/:id', controllers.${plural}.destroy);
+router.get('/${dasherized}', controllers.${camelized}.index);
+router.get('/${dasherized}/:id', controllers.${camelized}.show);
+router.post('/${dasherized}', controllers.${camelized}.create);
+router.put('/${dasherized}/:id', controllers.${camelized}.update);
+router.del('/${dasherized}/:id', controllers.${camelized}.destroy);
 `;
 }
 
-function _writeRoutes(plural) {
+function _writeRoutes(camelized) {
   var routesPath = path.join('.', 'src', 'routes.js');
-  var template = _routerTemplate(plural);
+  var template = _routerTemplate(camelized);
 
   var routes = fs.readFileSync(routesPath, 'utf8');
   var lines = routes.split('\n');
@@ -133,17 +134,17 @@ function _writeRoutes(plural) {
 
 
 module.exports = function(plural) {
-  plural = plural.toLowerCase();
-  var singular = _.str.inflection.singularize(plural);
+  var camelized = _.str.camelize(plural);
+  var singular = _.str.inflection.singularize(camelized);
   var className = _.str.classify(singular);
 
   var controllersDir = path.join('.', 'src', 'controllers');
 
-  var filePath = path.join(controllersDir, plural + '.js');
+  var filePath = path.join(controllersDir, camelized + '.js');
   var indexPath = path.join(controllersDir, 'index.js');
 
-  fs.writeFileSync(filePath, _controllerTemplate(className, singular, plural));
+  fs.writeFileSync(filePath, _controllerTemplate(className, singular, camelized));
   fs.writeFileSync(indexPath, _indexTemplate(controllersDir));
-  _writeRoutes(plural);
-  console.log(`${plural} controller written to ${filePath}`);
+  _writeRoutes(camelized);
+  console.log(`${camelized} controller written to ${filePath}`);
 };
