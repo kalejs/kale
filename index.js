@@ -1,8 +1,9 @@
 #! /usr/bin/env node
 
+'use strict';
+
 var async = require('async');
 var fs = require('fs-extra');
-var lodash = require('lodash');
 var path = require('path');
 var program = require('commander');
 var s = require('underscore.string');
@@ -26,13 +27,15 @@ program
       function (next) {
         replaceAllPlaceholdersWithAppName(appPath, name, next);
       }
-    ], function(err, results) {
+    ], function(err) {
       if (err) {
         console.log(err);
         process.exit(1);
       }
 
-      console.log(`New kale.js app created at ${appPath}`);
+      console.log(`New kale.js app created at ./${appPath}`);
+      console.log('');
+      console.log(`Before starting, cd into ${appPath} and run ./bin/setup`);
       process.exit(0);
     });
   });
