@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Run this script immediately after cloning the codebase.
+
+DEFAULT_PORT=3000
+
+# Set up npm dependencies
+npm install
+
+# Set up database
+createuser -s KALE_NAME_UNDERSCORED
+createdb KALE_NAME_UNDERSCORED_development -U KALE_NAME_UNDERSCORED
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+$DIR/../node_modules/.bin/knex migrate:latest
+
+# Set up configurable environment variables for Foreman
+if [ ! -f .env ]; then
+  echo "NODE_ENV=development" > .env
+  echo "PORT=$DEFAULT_PORT" >> .env
+fi
