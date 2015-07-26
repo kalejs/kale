@@ -19,7 +19,6 @@ function _generateMigration(tableName) {
   });
 
   fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
-  console.log('wrote to ' +file);
 }
 
 function _migrationTemplate(tableName) {
