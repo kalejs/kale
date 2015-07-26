@@ -4,6 +4,7 @@
 
 var generators = require('./generators');
 var program = require('commander');
+var s = require('underscore.string');
 
 program
   .command('new <NAME>')
@@ -15,6 +16,8 @@ program
   .usage('<controller|model|scaffold|migration> <NAME>')
   .description('Generate a new model, controller, scaffold, or migration for a Kale.js app')
   .action(function(generator, name) {
+    name = s.underscored(name);
+
     switch (generator) {
       case 'controller':
         generators.controller(name);

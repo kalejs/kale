@@ -6,7 +6,7 @@ var path = require('path');
 var s = require('underscore.string');
 
 function copyAppTemplate(appPath, callback) {
-  var templatePath = path.join(__dirname, 'template');
+  var templatePath = path.join(__dirname, '..', 'template');
   fs.copy(templatePath, appPath, callback);
 }
 
