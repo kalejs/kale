@@ -5,6 +5,7 @@
 DEFAULT_PORT=3000
 
 # Set up npm dependencies
+npm install -g nodemon
 npm install
 
 # Set up database
