@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/venables/kalejs/issues"
   },
-  "homepage": "https://github.com/venables/kalejs#readme"
+  "homepage": "https://github.com/venables/kalejs#readme",
+  "preferGlobal": true,
+  "bin": {
+    "kale": "index.js"
+  }
 }
