@@ -13,6 +13,7 @@ program
 
 program
   .command('generate <GENERATOR> <NAME>')
+  .alias('g')
   .usage('<controller|model|scaffold|migration> <NAME>')
   .description('Generate a new model, controller, scaffold, or migration for a Kale.js app')
   .option('-e, --empty', 'generate the file, but do not include any content')
