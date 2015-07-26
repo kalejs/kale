@@ -1,0 +1,19 @@
+{
+  "name": "kalejs",
+  "version": "0.0.1",
+  "description": "The node.js framework for developers who deliver.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venables/kalejs.git"
+  },
+  "author": "Matt Venables <mattvenables@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/venables/kalejs/issues"
+  },
+  "homepage": "https://github.com/venables/kalejs#readme"
+}
