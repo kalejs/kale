@@ -2,7 +2,9 @@
 
 'use strict';
 
+var execSync = require('child_process').execSync;
 var generators = require('./generators');
+var path = require('path');
 var program = require('commander');
 var s = require('underscore.string');
 
@@ -37,6 +39,15 @@ program
         console.log(`Unknown generator ${generator}`);
         process.exit(1);
     }
+  });
+
+program
+  .command('migrate')
+  .alias('m')
+  .action(function() {
+    var knex = path.join('.', 'node_modules', '.bin', 'knex');
+    var result = execSync(`${knex} migrate:latest`, { encoding: 'utf8' });
+    console.log(result);
   });
 
 program.parse(process.argv);
