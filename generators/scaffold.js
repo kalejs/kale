@@ -4,7 +4,7 @@ var _ = require('lodash');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
 
-module.exports = function(name) {
+module.exports = function(name, options) {
   var modelGenerator = require('./model');
   var controllerGenerator = require('./controller');
 
@@ -13,8 +13,8 @@ module.exports = function(name) {
   var camelized = _.str.camelize(singular);
   var controllerName = _.str.inflection.pluralize(camelized);
 
-  modelGenerator(singular);
-  controllerGenerator(controllerName);
+  modelGenerator(singular, options);
+  controllerGenerator(controllerName, options);
 
   console.log(`Scaffolding generated.`);
 };

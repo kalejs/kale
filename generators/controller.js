@@ -6,6 +6,15 @@ var path = require('path');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
 
+function _emptyControllerTemplate() {
+  return `'use strict';
+
+module.exports = {
+
+};
+`;
+}
+
 function _controllerTemplate(className, singular, plural) {
   return `'use strict';
 
@@ -133,7 +142,7 @@ function _writeRoutes(camelized) {
 }
 
 
-module.exports = function(plural) {
+module.exports = function(plural, options) {
   var camelized = _.str.camelize(plural);
   var singular = _.str.inflection.singularize(camelized);
   var className = _.str.classify(singular);
@@ -143,8 +152,20 @@ module.exports = function(plural) {
   var filePath = path.join(controllersDir, camelized + '.js');
   var indexPath = path.join(controllersDir, 'index.js');
 
-  fs.writeFileSync(filePath, _controllerTemplate(className, singular, camelized));
+  var template;
+
+  if (options.empty) {
+    template = _emptyControllerTemplate();
+  } else {
+    template = _controllerTemplate(className, singular, camelized);
+  }
+
+  fs.writeFileSync(filePath, template);
   fs.writeFileSync(indexPath, _indexTemplate(controllersDir));
-  _writeRoutes(camelized);
+
+  if (!options.empty) {
+    _writeRoutes(camelized);
+  }
+
   console.log(`${camelized} controller written to ${filePath}`);
 };

@@ -40,7 +40,6 @@ exports.down = function(knex) {
 `;
 }
 
-
 function _modelTemplate(className, tableName) {
   return `'use strict';
 
