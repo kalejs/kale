@@ -9,7 +9,7 @@ _.str.inflection = require('inflection');
 function _generateMigration(tableName) {
   var name = `create_${tableName}`;
   var migrationGenerator = require('./migration');
-  var migrationDir = path.join('.', 'src', 'db', 'migrations');
+  var migrationDir = path.join('.', 'db', 'migrations');
 
   migrationGenerator(name);
 
@@ -82,7 +82,7 @@ module.exports = function(name) {
   var underscored = _.str.underscored(name);
   var camelized = _.str.camelize(underscored);
   var tableName = _.str.inflection.pluralize(underscored);
-  var modelsDir = path.join('.', 'src', 'models');
+  var modelsDir = path.join('.', 'app', 'models');
 
   var filePath = path.join(modelsDir, camelized + '.js');
   var indexPath = path.join(modelsDir, 'index.js');

@@ -4,9 +4,9 @@ var async = require('async');
 var fs = require('fs-extra');
 var path = require('path');
 var s = require('underscore.string');
+var templatePath = path.join(__dirname, '..', 'templates', 'app');
 
 function copyAppTemplate(appPath, callback) {
-  var templatePath = path.join(__dirname, '..', 'template');
   fs.copy(templatePath, appPath, callback);
 }
 
@@ -30,10 +30,10 @@ function deleteDotfilesTemplate(appPath, callback) {
 function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
   var files = [
     path.join(appPath, 'bin', 'setup'),
-    path.join(appPath, 'knexfile.js'),
     path.join(appPath, 'package.json'),
     path.join(appPath, 'README.md'),
-    path.join(appPath, 'src', 'config', 'environments', 'all.js')
+    path.join(appPath, 'config', 'environments', 'all.js'),
+    path.join(appPath, 'config', 'environments', 'development.js')
   ];
 
   async.each(files, function(filename, next) {
@@ -53,7 +53,10 @@ function replacePlaceholderWithAppName(filename, appName, callback) {
       });
     },
     function writeFile(next) {
-      var replacedContent = contents.replaceAll('KALE_NAME_UNDERSCORED', underscored).replaceAll('KALE_NAME', appName);
+      var replacedContent = contents
+        .replaceAll('KALE_NAME_UNDERSCORED', underscored)
+        .replaceAll('KALE_NAME', appName);
+
       fs.writeFile(filename, replacedContent, next);
     }
   ], callback);

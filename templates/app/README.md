@@ -14,7 +14,7 @@ npm start
 
 ## Config
 
-Environment-specific files are located in `src/config/environments`.
+Environment-specific files are located in `config/environments`.
 
 For example, development config merges `environments/development.js` into `environments/all.js`.
 

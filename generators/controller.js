@@ -126,7 +126,7 @@ router.del('/api/${dasherized}/:id', controllers.${camelized}.destroy);
 }
 
 function _writeRoutes(camelized) {
-  var routesPath = path.join('.', 'src', 'routes.js');
+  var routesPath = path.join('.', 'config', 'routes.js');
   var template = _routerTemplate(camelized);
 
   var routes = fs.readFileSync(routesPath, 'utf8');
@@ -147,7 +147,7 @@ module.exports = function(plural, options) {
   var singular = _.str.inflection.singularize(camelized);
   var className = _.str.classify(singular);
 
-  var controllersDir = path.join('.', 'src', 'controllers');
+  var controllersDir = path.join('.', 'app', 'controllers');
 
   var filePath = path.join(controllersDir, camelized + '.js');
   var indexPath = path.join(controllersDir, 'index.js');

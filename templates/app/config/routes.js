@@ -1,6 +1,6 @@
 'use strict';
 
-var controllers = require('./controllers');
+var controllers = require('../app/controllers');
 var router = require('koa-router')();
 
 module.exports = router;
