@@ -13,7 +13,8 @@ createuser -s KALE_NAME_UNDERSCORED
 createdb KALE_NAME_UNDERSCORED_development -U KALE_NAME_UNDERSCORED
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-$DIR/../node_modules/.bin/knex migrate:latest
+cd $DIR/..
+kale migrate
 
 # Set up configurable environment variables for Foreman
 if [ ! -f .env ]; then
