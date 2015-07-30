@@ -117,11 +117,11 @@ function _routerTemplate(camelized) {
   var dasherized = _.str.dasherize(camelized);
 
   return `
-router.get('/${dasherized}', controllers.${camelized}.index);
-router.get('/${dasherized}/:id', controllers.${camelized}.show);
-router.post('/${dasherized}', controllers.${camelized}.create);
-router.put('/${dasherized}/:id', controllers.${camelized}.update);
-router.del('/${dasherized}/:id', controllers.${camelized}.destroy);
+router.get('/api/${dasherized}', controllers.${camelized}.index);
+router.get('/api/${dasherized}/:id', controllers.${camelized}.show);
+router.post('/api/${dasherized}', controllers.${camelized}.create);
+router.put('/api/${dasherized}/:id', controllers.${camelized}.update);
+router.del('/api/${dasherized}/:id', controllers.${camelized}.destroy);
 `;
 }
 
