@@ -27,14 +27,40 @@ function deleteDotfilesTemplate(appPath, callback) {
   fs.remove(dotfilesPath, callback);
 }
 
+function walkSync(dir, filelist) {
+  var files = fs.readdirSync(dir);
+  filelist = filelist || [];
+
+  files.forEach(function(file) {
+    var filename = path.join(dir, file);
+
+    if (fs.statSync(filename).isDirectory()) {
+      filelist = walkSync(filename, filelist);
+    } else {
+      if (!s.startsWith(file, '.')) {
+        filelist.push(filename);
+      }
+    }
+  });
+
+  return filelist;
+}
+
 function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
+  var dirs = [
+    path.join(appPath, 'app'),
+    path.join(appPath, 'bin'),
+    path.join(appPath, 'config'),
+  ];
+
   var files = [
-    path.join(appPath, 'bin', 'setup'),
     path.join(appPath, 'package.json'),
     path.join(appPath, 'README.md'),
-    path.join(appPath, 'config', 'environments', 'all.js'),
-    path.join(appPath, 'config', 'environments', 'development.js')
   ];
+
+  dirs.forEach(function(dir) {
+    files = files.concat(walkSync(dir));
+  });
 
   async.each(files, function(filename, next) {
     replacePlaceholderWithAppName(filename, appName, next);
@@ -43,6 +69,7 @@ function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
 
 function replacePlaceholderWithAppName(filename, appName, callback) {
   var underscored = s.underscored(appName);
+  var className = s.classify(underscored);
   var contents;
 
   async.series([
@@ -54,6 +81,7 @@ function replacePlaceholderWithAppName(filename, appName, callback) {
     },
     function writeFile(next) {
       var replacedContent = contents
+        .replaceAll('KALE_NAME_CLASS', className)
         .replaceAll('KALE_NAME_UNDERSCORED', underscored)
         .replaceAll('KALE_NAME', appName);
 
