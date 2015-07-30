@@ -51,9 +51,9 @@ kale.js comes equipped with a several generators to speed up development:
 kale generate model User
 ```
 
-This will create a new `User` model (referencing a `users` table) named `user.js` in the `src/models` directory.
+This will create a new `User` model (referencing a `users` table) named `user.js` in the `app/models` directory.
 
-This will also create an empty migration named `<timestamp>_create_users.js` in the `src/db/migrate` directory.
+This will also create an empty migration named `<timestamp>_create_users.js` in the `db/migrations` directory.
 
 ### Controller Generator
 
@@ -61,7 +61,7 @@ This will also create an empty migration named `<timestamp>_create_users.js` in 
 kale generate controller users
 ```
 
-This will create a new RESTful controller named `users` in the `src/controllers` directory.
+This will create a new RESTful controller named `users` in the `app/controllers` directory.
 
 The controller contains `index`, `show`, `create`, `update`, and `destroy` methods, as well as their routes.
 
@@ -71,7 +71,7 @@ The controller contains `index`, `show`, `create`, `update`, and `destroy` metho
 kale generate migration create_users
 ```
 
-This will create a new migration named `<timestamp>_create_users.js` in `src/db/migrate` directory.
+This will create a new migration named `<timestamp>_create_users.js` in `db/migrations` directory.
 
 
 ### Scaffold Generator
