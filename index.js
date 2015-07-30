@@ -46,7 +46,8 @@ program
   .alias('m')
   .action(function() {
     var knex = path.join('.', 'node_modules', '.bin', 'knex');
-    var result = execSync(`${knex} migrate:latest`, { encoding: 'utf8' });
+    var knexfile = path.join('.', 'db', 'knexfile.js');
+    var result = execSync(`${knex} migrate:latest --knexfile ${knexfile}`, { encoding: 'utf8' });
     console.log(result);
   });
 
