@@ -3,7 +3,7 @@
 var path = require('path');
 
 try {
-  require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') }).load();
+  require('dotenv').config({ path: path.join(__dirname, '..', '.env') }).load();
 } catch(e) {}
 
 var _ = require('lodash');
