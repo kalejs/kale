@@ -1,6 +1,7 @@
 'use strict';
 
 var async = require('async');
+var exec = require('child_process').exec;
 var fs = require('fs-extra');
 var path = require('path');
 var s = require('underscore.string');
@@ -90,6 +91,10 @@ function replacePlaceholderWithAppName(filename, appName, callback) {
   ], callback);
 }
 
+function initializeGitRepo(appPath, callback) {
+  exec(`git init ${appPath}`, callback);
+}
+
 String.prototype.replaceAll = function(find, replace) {
   return this.replace(new RegExp(find, 'g'), replace);
 };
@@ -98,18 +103,21 @@ module.exports = function(appName) {
   var appPath = path.join('.', appName);
 
   async.series([
-      function (next) {
-        copyAppTemplate(appPath, next);
-      },
-      function (next) {
-        installDotfiles(appPath, next);
-      },
-      function (next) {
-        deleteDotfilesTemplate(appPath, next);
-      },
-      function (next) {
-        replaceAllPlaceholdersWithAppName(appPath, appName, next);
-      }
+    function (next) {
+      copyAppTemplate(appPath, next);
+    },
+    function (next) {
+      installDotfiles(appPath, next);
+    },
+    function (next) {
+      deleteDotfilesTemplate(appPath, next);
+    },
+    function (next) {
+      replaceAllPlaceholdersWithAppName(appPath, appName, next);
+    },
+    function (next) {
+      initializeGitRepo(appPath, next);
+    }
   ], function(err) {
     if (err) {
       console.log(err);
