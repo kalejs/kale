@@ -13,6 +13,7 @@ A Kale.js application:
 * Built on [koa](http://koajs.com/) and makes heavy use of ES6 Generators.
 * Uses [bookshelf.js](http://bookshelfjs.org/) for object Models.
 * Backed by [Postgresql](http://www.postgresql.org/) by default.
+* Includes basic [AngularJS](https://angularjs.org/) pages.
 * Generates models with UUIDs as the primary key by default.
 * Makes authentication simple and secure by using [bookshelf-secure-password](https://github.com/venables/bookshelf-secure-password).
   * Simply add `hasSecurePassword: true` to your model.
@@ -40,6 +41,33 @@ This will build a new kale.js app in `./example-app`.
 
 From the root of the new project, run `./bin/setup`, then `npm start` and you'll have a server running.
 
+The app structure will look like:
+
+```
+app/
+  assets/             <-- front-end app (Angular)
+    images/           <-- static images
+    javascripts/      <-- static js files
+    stylesheets/      <-- static css files
+    views/            <-- static html page
+
+  controllers/        <-- API controllers
+  middleware/         <-- API middleware
+  models/             <-- Bookshelf models
+
+  index.js            <-- app entry point
+
+bin/                  <-- binary files
+
+config/               <-- app config
+  environments/       <-- environment specific config
+  routes.js           <-- API routes
+
+db/                   <-- database config, initialization
+  migrations/         <-- database migrations
+
+test/                 <-- tests
+```
 
 ## Generators
 
