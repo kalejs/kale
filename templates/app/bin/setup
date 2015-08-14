@@ -8,16 +8,17 @@ DEFAULT_PORT=3000
 npm install -g nodemon
 npm install
 
-# Set up database
-createuser -s KALE_NAME_UNDERSCORED
-createdb KALE_NAME_UNDERSCORED_development -U KALE_NAME_UNDERSCORED
-
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd $DIR/..
-kale migrate
 
 # Set up configurable environment variables for Foreman
 if [ ! -f .env ]; then
   echo "NODE_ENV=development" > .env
   echo "PORT=$DEFAULT_PORT" >> .env
 fi
+
+# Create and migrate the database
+createuser -s KALE_NAME_UNDERSCORED
+createdb KALE_NAME_UNDERSCORED_development -U KALE_NAME_UNDERSCORED
+
+kale migrate
