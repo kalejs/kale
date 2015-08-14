@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('firstSongApp.services',[])
+angular.module('KALE_NAME_CLASSApp.services',[])
   .factory('User', ['$resource', function($resource) {
 
   }]);
