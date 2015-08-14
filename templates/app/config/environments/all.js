@@ -27,5 +27,6 @@ module.exports = {
     format: 'common'
   },
 
-  port: process.env.PORT || 3000
+  port: process.env.PORT || 3000,
+  root: path.join(__dirname, '..', '..')
 };
