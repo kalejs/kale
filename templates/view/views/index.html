@@ -1,0 +1,13 @@
+<h1>Users</h1>
+
+<table class="table">
+  <tr ng-repeat="user in users">
+    <td>{{ user.email }}</td>
+    <td>
+      <a ui-sref="showUser({ id: user.id })">View</a>
+      <a ng-click="destroy(user)">Delete</a>
+    </td>
+  </tr>
+</table>
+
+<a ui-sref="newUser">Add New User</a>

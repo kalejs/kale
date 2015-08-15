@@ -1,5 +1,7 @@
 'use strict';
 
+var angular = require('angular');
+
 angular.module('KALE_NAME_CLASSApp', [
   'ui.router',
   'ngResource',
@@ -8,19 +10,8 @@ angular.module('KALE_NAME_CLASSApp', [
 ]);
 
 angular.module('KALE_NAME_CLASSApp')
-  .config([ '$stateProvider', '$httpProvider', '$locationProvider',
-    function($stateProvider,   $httpProvider,   $locationProvider) {
-
-      $stateProvider
-        .state
-        .state('home', {
-          url:'/',
-          templateUrl:'/assets/views/home/index.html',
-          controller:'HomepageController',
-        });
-
+  .config(['$locationProvider', function($locationProvider) {
       $locationProvider.html5Mode(true);
-    }
-  ]).run(['$state', function($state) {
+  }]).run(['$state', function($state) {
     $state.go('home');
   }]);
