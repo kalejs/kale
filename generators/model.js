@@ -6,7 +6,7 @@ var path = require('path');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
 
-function _generateMigration(tableName) {
+function _generateMigration(tableName, isUserModel) {
   var name = `create_${tableName}`;
   var migrationGenerator = require('./migration');
   var migrationDir = path.join('.', 'db', 'migrations');
@@ -18,7 +18,31 @@ function _generateMigration(tableName) {
     return _.endsWith(filename, `${name}.js`);
   });
 
-  fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
+  if (isUserModel) {
+    fs.writeFileSync(path.join(migrationDir, file), _userMigrationTemplate(tableName));
+  } else {
+    fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
+  }
+}
+
+function _userMigrationTemplate(tableName) {
+  return `'use strict';
+
+exports.up = function(knex) {
+  return knex.schema.createTable('${tableName}', function(table) {
+    table.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
+
+    table.string('email').unique().notNullable();
+    table.string('password_digest').notNullable();
+
+    table.timestamps();
+  });
+};
+
+exports.down = function(knex) {
+  return knex.schema.dropTableIfExists('${tableName}');
+};
+`;
 }
 
 function _migrationTemplate(tableName) {
@@ -38,7 +62,7 @@ exports.down = function(knex) {
 `;
 }
 
-function _userModelTemplate(className, templateName) {
+function _userModelTemplate(className, tableName) {
   return `'use strict';
 
 var bookshelf = require('../../db');
@@ -117,7 +141,9 @@ module.exports = function(name, options) {
   } else {
     fs.writeFileSync(filePath, _modelTemplate(className, tableName));
   }
+
   fs.writeFileSync(indexPath, _indexTemplate(modelsDir));
-  _generateMigration(tableName);
+  _generateMigration(tableName, options && options.user);
+
   console.log(`${className} model written to ${filePath}`);
 };
