@@ -9,7 +9,7 @@ Kale.js is a set of lightweight, opinionated generators for building highly-scal
 Kale.js consists of 6 Generators:
   One to [build an app](#usage),
   one to [build a controller](#controller-generator),
-  one to [build a model](#model-generator) (or [an authenticatable model](#authenticated-generator)),
+  one to [build a model](#model-generator) (or [an authenticatable model](#authenticated-model-generator)),
   one to [build a set of views](#view-generator),
   one to [build a migration](#migration-generator), and
   one to [build scaffolding](#scaffold-generator).
@@ -96,7 +96,7 @@ This will create a new `Thing` model (referencing a `things` table) named `thing
 
 This will also create an empty migration named `<timestamp>_create_things.js` in the `db/migrations` directory.
 
-#### authenticated Generator
+#### Authenticated Model Generator
 
 To generate an authenticatable model, you can use the User generator:
 
