@@ -5,5 +5,6 @@ module.exports = {
   controller: require('./controller'),
   migration: require('./migration'),
   model: require('./model'),
-  scaffold: require('./scaffold')
+  scaffold: require('./scaffold'),
+  view: require('./view')
 };

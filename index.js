@@ -16,7 +16,7 @@ program
 program
   .command('generate <GENERATOR> <NAME>')
   .alias('g')
-  .usage('<controller|model|scaffold|migration> <NAME>')
+  .usage('<controller|model|view|scaffold|migration> <NAME>')
   .description('Generate a new model, controller, scaffold, or migration for a Kale.js app')
   .option('-e, --empty', 'generate the file, but do not include any content')
   .action(function(generator, name, options) {
@@ -28,6 +28,9 @@ program
         break;
       case 'model':
         generators.model(name, options);
+        break;
+      case 'view':
+        generators.view(name, options);
         break;
       case 'scaffold':
         generators.scaffold(name, options);

@@ -1,14 +1,12 @@
 'use strict';
 
-var angular = require('angular');
-
 angular.module('KALE_NAME_CLASSApp.controllers', [])
-  .controller('UsersIndexController', ['$scope', '$state', 'User', 'users',
-    function($scope, $state, User, users) {
-      $scope.users = users;
+  .controller('PLURAL_NAME_CAPITALIZEDIndexController', ['$scope', '$state', 'SINGULAR_NAME_CAPITALIZED', 'PLURAL_NAME_LOWERCASE',
+    function($scope, $state, SINGULAR_NAME_CAPITALIZED, PLURAL_NAME_LOWERCASE) {
+      $scope.PLURAL_NAME_LOWERCASE = PLURAL_NAME_LOWERCASE;
 
-      $scope.destroy = function(user) {
-        User.delete({ id: user.id }, function() {
+      $scope.destroy = function(SINGULAR_NAME_LOWERCASE) {
+        SINGULAR_NAME_CAPITALIZED.delete({ id: SINGULAR_NAME_LOWERCASE.id }, function() {
           $state.go($state.current, {}, { reload: true });
         });
       };
@@ -16,31 +14,31 @@ angular.module('KALE_NAME_CLASSApp.controllers', [])
     }
   ])
 
-  .controller('UsersShowController', ['$scope', 'user',
-    function($scope, user) {
-      $scope.user = user;
+  .controller('PLURAL_NAME_CLASSShowController', ['$scope', 'SINGULAR_NAME_LOWERCASE',
+    function($scope, SINGULAR_NAME_LOWERCASE) {
+      $scope.SINGULAR_NAME_LOWERCASE = SINGULAR_NAME_LOWERCASE;
     }
   ])
 
-  .controller('UsersNewController', ['$scope', '$state', '$stateParams', 'User',
-    function($scope, $state, $stateParams, User) {
-      $scope.user = new User();
+  .controller('PLURAL_NAME_CLASSNewController', ['$scope', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
+    function($scope, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
+      $scope.SINGULAR_NAME_LOWERCASE = new SINGULAR_NAME_CAPITALIZED();
 
       $scope.create = function() {
-        $scope.user.$save(function() {
-          $state.go('users');
+        $scope.SINGULAR_NAME_LOWERCASE.$save(function() {
+          $state.go('PLURAL_NAME_LOWERCASE');
         });
       };
     }
   ])
 
-  .controller('UsersEditController', ['$scope', '$state', 'user',
-    function($scope, $state, user) {
-      $scope.user = user;
+  .controller('PLURAL_NAME_CLASSEditController', ['$scope', '$state', 'SINGULAR_NAME_LOWERCASE',
+    function($scope, $state, SINGULAR_NAME_LOWERCASE) {
+      $scope.SINGULAR_NAME_LOWERCASE = SINGULAR_NAME_LOWERCASE;
 
       $scope.update = function() {
-        $scope.user.$update(function() {
-          $state.go('users');
+        $scope.SINGULAR_NAME_LOWERCASE.$update(function() {
+          $state.go('PLURAL_NAME_LOWERCASE');
         });
       };
     }

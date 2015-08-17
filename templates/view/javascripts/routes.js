@@ -1,21 +1,19 @@
 'use strict';
 
-var angular = require('angular');
-
 angular.module('KALE_NAME_CLASSApp')
   .config([ '$stateProvider',
     function($stateProvider) {
       $stateProvider
-        .state('users', {
-          url:'/users',
-          templateUrl:'/assets/views/users/index.html',
-          controller:'UsersIndexController',
+        .state('PLURAL_NAME_LOWERCASE_DASHED', {
+          url:'/PLURAL_NAME_LOWERCASE_DASHED',
+          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/index.html',
+          controller:'PLURAL_NAME_CAPITALIZEDIndexController',
           resolve: {
-            users: ['$q', 'User', function($q, User) {
+            PLURAL_NAME_LOWERCASE: ['$q', 'SINGULAR_NAME_CAPITALIZED', function($q, SINGULAR_NAME_CAPITALIZED) {
               var deferred = $q.defer();
 
-              User.get(function(body) {
-                deferred.resolve(body.users);
+              SINGULAR_NAME_CAPITALIZED.get(function(body) {
+                deferred.resolve(body.PLURAL_NAME_LOWERCASE);
               }, function() {
                 deferred.resolve([]);
               });
@@ -24,25 +22,25 @@ angular.module('KALE_NAME_CLASSApp')
             }]
           }
         })
-        .state('newUser', {
-          url:'/users/new',
-          templateUrl:'/assets/views/users/new.html',
-          controller:'UsersNewController'
+        .state('newSINGULAR_NAME_CAPITALIZED', {
+          url:'/PLURAL_NAME_LOWERCASE_DASHED/new',
+          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/new.html',
+          controller:'PLURAL_NAME_CAPITALIZEDNewController'
         })
-        .state('showUser', {
-          url:'/users/:id',
-          templateUrl:'/assets/views/users/show.html',
-          controller:'UsersShowController',
+        .state('showSINGULAR_NAME_CAPITALIZED', {
+          url:'/PLURAL_NAME_LOWERCASE_DASHED/:id',
+          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/show.html',
+          controller:'PLURAL_NAME_CAPITALIZEDShowController',
           resolve: {
-            user: ['$q', '$state', '$stateParams', 'User',
-              function($q, $state, $stateParams, User) {
+            SINGULAR_NAME_LOWERCASE: ['$q', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
+              function($q, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
                 var deferred = $q.defer();
 
-                User.get({ id: $stateParams.id }, function(body) {
-                  deferred.resolve(body.user);
+                SINGULAR_NAME_CAPITALIZED.get({ id: $stateParams.id }, function(body) {
+                  deferred.resolve(body.SINGULAR_NAME_LOWERCASE);
                 }, function() {
                   deferred.reject();
-                  $state.go('users');
+                  $state.go('PLURAL_NAME_LOWERCASE');
                 });
 
                 return deferred.promise;
@@ -50,20 +48,20 @@ angular.module('KALE_NAME_CLASSApp')
             ]
           }
         })
-        .state('editUser', {
-          url:'/users/:id/edit',
-          templateUrl:'/assets/views/users/edit.html',
-          controller:'UsersEditController',
+        .state('editSINGULAR_NAME_CAPITALIZED', {
+          url:'/PLURAL_NAME_LOWERCASE_DASHED/:id/edit',
+          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/edit.html',
+          controller:'PLURAL_NAME_CAPITALIZEDEditController',
           resolve: {
-            user: ['$q', '$state', '$stateParams', 'User',
-              function($q, $state, $stateParams, User) {
+            SINGULAR_NAME_LOWERCASE: ['$q', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
+              function($q, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
                 var deferred = $q.defer();
 
-                User.get({ id: $stateParams.id }, function(body) {
-                  deferred.resolve(body.user);
+                SINGULAR_NAME_CAPITALIZED.get({ id: $stateParams.id }, function(body) {
+                  deferred.resolve(body.SINGULAR_NAME_LOWERCASE);
                 }, function() {
                   deferred.reject();
-                  $state.go('users');
+                  $state.go('PLURAL_NAME_LOWERCASE');
                 });
 
                 return deferred.promise;
@@ -73,4 +71,3 @@ angular.module('KALE_NAME_CLASSApp')
         });
     }
   ]);
-

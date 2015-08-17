@@ -1,13 +1,13 @@
-<h1>Users</h1>
+<h1>PLURAL_NAME_CAPITALIZED</h1>
 
 <table class="table">
-  <tr ng-repeat="user in users">
-    <td>{{ user.email }}</td>
+  <tr ng-repeat="SINGULAR_NAME_LOWERCASE in PLURAL_NAME_LOWERCASE">
+    <td>{{ SINGULAR_NAME_LOWERCASE.id }}</td>
     <td>
-      <a ui-sref="showUser({ id: user.id })">View</a>
-      <a ng-click="destroy(user)">Delete</a>
+      <a ui-sref="showSINGULAR_NAME_CAPITALIZED({ id: SINGULAR_NAME_LOWERCASE.id })">View</a>
+      <a ng-click="destroy(SINGULAR_NAME_LOWERCASE)">Delete</a>
     </td>
   </tr>
 </table>
 
-<a ui-sref="newUser">Add New User</a>
+<a ui-sref="newSINGULAR_NAME_CAPITALIZED">New SINGULAR_NAME_CAPITALIZED</a>

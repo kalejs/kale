@@ -1,10 +1,8 @@
 'use strict';
 
-var angular = require('angular');
-
 angular.module('KALE_NAME_CLASSApp.services', [])
-  .factory('User', ['$resource', function($resource) {
-    return $resource('/api/v1/users/:id', { id: '@id' }, {
+  .factory('SINGULAR_NAME_CAPITALIZED', ['$resource', function($resource) {
+    return $resource('/api/v1/PLURAL_NAME_LOWERCASE_DASHED/:id', { id: '@id' }, {
       update: {
         method: 'PUT'
       }

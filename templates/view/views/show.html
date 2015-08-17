@@ -1,18 +1,10 @@
-<h1>{{ user.email }}</h1>
+<h1>{{ SINGULAR_NAME_LOWERCASE.email }}</h1>
 
 <table class="table">
   <tr>
     <td>ID</td>
-    <td>{{ user.id }}</td>
-  </tr>
-  <tr>
-    <td>Email</td>
-    <td>{{ user.email }}</td>
-  </tr>
-  <tr>
-    <td>Created At</td>
-    <td>{{ user.created_at }}</td>
+    <td>{{ SINGULAR_NAME_LOWERCASE.id }}</td>
   </tr>
 </table>
 
-<a ui-sref="editUser({ id: user.id })">Edit</a>
+<a ui-sref="editSINGULAR_NAME_CAPITALIZED({ id: SINGULAR_NAME_LOWERCASE.id })">Edit</a>
