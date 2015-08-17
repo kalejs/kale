@@ -1,10 +1,10 @@
 # kale.js
 
-The node.js framework for developers who deliver.
+The node.js framework for developers who deliver on time.
 
 ## What is it?
 
-Kale.js is a set of lightweight, opinionated generators for building koa-based node.js APIs with ease.
+Kale.js is a set of lightweight, opinionated generators for building highly-scalable koa-based node.js APIs with ease and speed.
 
 Kale.js consists of 5 Generators. One to [build an app](#usage), one to [build a controller](#controller-generator), one to [build a model](#model-generator), one to [build a migration](#migration-generator), and one to [build scaffolding](#scaffold-generator).
 
@@ -13,7 +13,11 @@ A Kale.js application:
 * Built on [koa](http://koajs.com/) and makes heavy use of ES6 Generators.
 * Uses [bookshelf.js](http://bookshelfjs.org/) for object Models.
 * Backed by [Postgresql](http://www.postgresql.org/) by default.
-* Includes basic [AngularJS](https://angularjs.org/) pages.
+* Includes basic single-page-app using [AngularJS](https://angularjs.org/), installed with [bower](http://bower.io/).
+* Sets up [Gulp](https://github.com/gulpjs/gulp) with basic [linting with jshint](https://github.com/jshint/jshint) and [code-style checking with jscs](https://github.com/jscs-dev/node-jscs)
+* Includes an asset pipeline using [Broccoli](http://broccolijs.com/) with development file watching and reload.
+* Front-end javascript uses [browserify](http://browserify.org/) for node-style `require` statements.
+* Front-end stylesheets are compiled with [less](http://lesscss.org/).
 * Generates models with UUIDs as the primary key by default.
 * Makes authentication simple and secure by using [bookshelf-secure-password](https://github.com/venables/bookshelf-secure-password).
   * Simply add `hasSecurePassword: true` to your model.
@@ -21,7 +25,6 @@ A Kale.js application:
 * Does not include cookies or session support by default (so no need for CSRF protection)
 * Includes environment-specific config according to [the 12-factor app](http://12factor.net/) methodology.
 * Includes a [Procfile](https://devcenter.heroku.com/articles/procfile) for easy deployment.
-* Sets up [Gulp](https://github.com/gulpjs/gulp) with basic [linting with jshint](https://github.com/jshint/jshint) and [code-style checking with jscs](https://github.com/jscs-dev/node-jscs)
 
 ## Installation
 
@@ -46,9 +49,10 @@ The app structure will look like:
 ```
 app/
   assets/             <-- front-end app (Angular)
+    bower_components  <-- bower-based installed assets
     images/           <-- static images
     javascripts/      <-- static js files
-    stylesheets/      <-- static css files
+    stylesheets/      <-- static css (less) files
     views/            <-- static html page
 
   controllers/        <-- API controllers
@@ -65,6 +69,9 @@ config/               <-- app config
 
 db/                   <-- database config, initialization
   migrations/         <-- database migrations
+
+public/               <-- static/public files live here
+  assets/             <-- asset pipeline compiles app/assets to this directory
 
 test/                 <-- tests
 ```

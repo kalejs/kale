@@ -7,8 +7,7 @@ require('angular-ui-router');
 angular.module('KALE_NAME_CLASSApp', [
   'ui.router',
   'ngResource',
-  'KALE_NAME_CLASSApp.controllers',
-  'KALE_NAME_CLASSApp.services',
+  'KALE_NAME_CLASSApp.controllers'
 ]);
 
 require('./controllers');
