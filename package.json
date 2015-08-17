@@ -1,6 +1,6 @@
 {
   "name": "kalejs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The node.js framework for developers who deliver.",
   "main": "index.js",
   "scripts": {
