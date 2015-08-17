@@ -2,6 +2,7 @@
 
 'use strict';
 
+var _ = require('lodash');
 var execSync = require('child_process').execSync;
 var generators = require('./generators');
 var path = require('path');
@@ -16,7 +17,7 @@ program
 program
   .command('generate <GENERATOR> <NAME>')
   .alias('g')
-  .usage('<controller|model|view|scaffold|migration> <NAME>')
+  .usage('<controller|model|authenticated|view|scaffold|migration> <NAME>')
   .description('Generate a new model, controller, scaffold, or migration for a Kale.js app')
   .option('-e, --empty', 'generate the file, but do not include any content')
   .action(function(generator, name, options) {
@@ -28,6 +29,10 @@ program
         break;
       case 'model':
         generators.model(name, options);
+        break;
+      case 'user':
+      case 'authenticated':
+        generators.model(name, _.extend({}, options, { user: true }));
         break;
       case 'view':
         generators.view(name, options);

@@ -6,7 +6,13 @@ The node.js framework for developers who deliver on time.
 
 Kale.js is a set of lightweight, opinionated generators for building highly-scalable koa-based node.js APIs with ease and speed.
 
-Kale.js consists of 5 Generators. One to [build an app](#usage), one to [build a controller](#controller-generator), one to [build a model](#model-generator), one to [build a migration](#migration-generator), and one to [build scaffolding](#scaffold-generator).
+Kale.js consists of 6 Generators:
+  One to [build an app](#usage),
+  one to [build a controller](#controller-generator),
+  one to [build a model](#model-generator) (or [an authenticatable model](#authenticated-generator)),
+  one to [build a set of views](#view-generator),
+  one to [build a migration](#migration-generator), and
+  one to [build scaffolding](#scaffold-generator).
 
 A Kale.js application:
 
@@ -83,12 +89,25 @@ kale.js comes equipped with a several generators to speed up development:
 ### Model Generator
 
 ```
-kale generate model User
+kale generate model Thing
 ```
 
-This will create a new `User` model (referencing a `users` table) named `user.js` in the `app/models` directory.
+This will create a new `Thing` model (referencing a `things` table) named `thing.js` in the `app/models` directory.
 
-This will also create an empty migration named `<timestamp>_create_users.js` in the `db/migrations` directory.
+This will also create an empty migration named `<timestamp>_create_things.js` in the `db/migrations` directory.
+
+#### authenticated Generator
+
+To generate an authenticatable model, you can use the User generator:
+
+```
+kale generate authenticated User
+```
+
+This will run the normal model generator, but also include `hasSecurePassword: true`.
+
+The model will also include authentication methods to make it easy to `User.authenticate(email, password)`
+
 
 ### Controller Generator
 
@@ -99,6 +118,14 @@ kale generate controller users
 This will create a new RESTful controller named `users` in the `app/controllers` directory.
 
 The controller contains `index`, `show`, `create`, `update`, and `destroy` methods, as well as their routes.
+
+### View Generator
+
+```
+kale generate view users
+```
+
+This will create a new set of AngularJS views under `/users` in `app/assets/views` and `app/assets/javascripts`.
 
 ### Migration Generator
 

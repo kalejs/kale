@@ -38,7 +38,7 @@ exports.down = function(knex) {
 `;
 }
 
-function _modelTemplate(className, tableName) {
+function _userModelTemplate(className, templateName) {
   return `'use strict';
 
 var bookshelf = require('../../db');
@@ -46,6 +46,32 @@ var bookshelf = require('../../db');
 var ${className} = bookshelf.Model.extend({
   tableName: '${tableName}',
   hasTimestamps: true,
+  hasSecurePassword: true,
+  visible: ['id', 'email', 'created_at']
+}, {
+
+  authenticate: function *(email, password) {
+    var normalizedEmail = email.toLowerCase().trim();
+    var user = yield new this({ email: normalizedEmail }).fetch({ require: true });
+    var authenticated = user.authenticate(password);
+
+    return authenticated && user;
+  }
+
+});
+
+module.exports = bookshelf.model('${className}', ${className});
+`;
+}
+
+function _modelTemplate(className, tableName) {
+  return `'use strict';
+
+var bookshelf = require('../../db');
+
+var ${className} = bookshelf.Model.extend({
+  tableName: '${tableName}',
+  hasTimestamps: true
 });
 
 module.exports = bookshelf.model('${className}', ${className});
@@ -76,7 +102,7 @@ module.exports = {
   return template.replace('[FILES]', requires.join('\n'));
 }
 
-module.exports = function(name) {
+module.exports = function(name, options) {
   var className = _.str.classify(name);
   var underscored = _.str.underscored(name);
   var camelized = _.str.camelize(underscored);
@@ -86,7 +112,11 @@ module.exports = function(name) {
   var filePath = path.join(modelsDir, camelized + '.js');
   var indexPath = path.join(modelsDir, 'index.js');
 
-  fs.writeFileSync(filePath, _modelTemplate(className, tableName));
+  if (options && options.user) {
+    fs.writeFileSync(filePath, _userModelTemplate(className, tableName));
+  } else {
+    fs.writeFileSync(filePath, _modelTemplate(className, tableName));
+  }
   fs.writeFileSync(indexPath, _indexTemplate(modelsDir));
   _generateMigration(tableName);
   console.log(`${className} model written to ${filePath}`);
