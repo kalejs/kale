@@ -3,12 +3,13 @@
   "eqeqeq": true,
   "esnext": true,
   "globals": {
-    "describe"   : false,
-    "it"         : false,
+    "after"      : false,
+    "afterEach"  : false,
+    "angular"    : true,
     "before"     : false,
     "beforeEach" : false,
-    "after"      : false,
-    "afterEach"  : false
+    "describe"   : false,
+    "it"         : false
   },
   "latedef": "nofunc",
   "newcap": true,

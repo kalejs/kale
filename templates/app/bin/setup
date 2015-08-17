@@ -5,8 +5,9 @@
 DEFAULT_PORT=3000
 
 # Set up npm dependencies
-npm install -g nodemon
+npm install -g nodemon gulp bower
 npm install
+bower install
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd $DIR/..
