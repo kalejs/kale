@@ -4,18 +4,18 @@ require('angular');
 require('angular-resource');
 require('angular-ui-router');
 
-angular.module('KALE_NAME_CLASSApp', [
+angular.module('app', [
   'ui.router',
   'ngResource',
-  'KALE_NAME_CLASSApp.controllers',
-  'KALE_NAME_CLASSApp.services'
+  'app.controllers',
+  'app.services'
 ]);
 
 require('./controllers');
 require('./routes');
 require('./services');
 
-angular.module('KALE_NAME_CLASSApp')
+angular.module('app')
   .config(['$locationProvider', function($locationProvider) {
     $locationProvider.html5Mode(true);
   }]).run(['$state', function($state) {

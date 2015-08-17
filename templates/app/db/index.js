@@ -1,7 +1,6 @@
 'use strict';
 
-var config = require('../config');
-var knexfile = require('../knexfile')[config.env];
+var knexfile = require('./knexfile');
 var knex = require('knex')(knexfile);
 var bookshelf = require('bookshelf')(knex);
 var securePassword = require('bookshelf-secure-password');

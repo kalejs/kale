@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var async = require('async');
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
@@ -53,8 +53,8 @@ function replaceContents(filename, names, callback) {
         .replaceAll('SINGULAR_NAME_CAPITALIZED', names.singular.capitalized)
         .replaceAll('SINGULAR_NAME_LOWERCASE', names.singular.lowercase)
         .replaceAll('PLURAL_NAME_CAPITALIZED', names.plural.capitalized)
-        .replaceAll('PLURAL_NAME_LOWERCASE', names.plural.lowercase)
-        .replaceAll('PLURAL_NAME_LOWERCASE_DASHED', names.plural.lowercaseDashed);
+        .replaceAll('PLURAL_NAME_LOWERCASE_DASHED', names.plural.lowercaseDashed)
+        .replaceAll('PLURAL_NAME_LOWERCASE', names.plural.lowercase);
 
       fs.writeFile(filename, replacedContent, next);
     }
@@ -63,7 +63,7 @@ function replaceContents(filename, names, callback) {
 
 function installJavascript(names, callback) {
   var templatePath = path.join(__dirname, '..', 'templates', 'view');
-  var assetsPath = path.join('.', 'app', 'assets', 'javasripts');
+  var assetsPath = path.join('.', 'app', 'assets', 'javascripts');
   var controller = path.join(templatePath, 'javascripts', 'controller.js');
   var routes = path.join(templatePath, 'javascripts', 'routes.js');
   var service = path.join(templatePath, 'javascripts', 'service.js');
@@ -77,7 +77,7 @@ function installJavascript(names, callback) {
     },
     function controllerIndex(next) {
       var index = path.join(assetsPath, 'controllers', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');`, next);
+      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');\n`, next);
     },
 
     function routesFile(next) {
@@ -88,7 +88,7 @@ function installJavascript(names, callback) {
     },
     function routesIndex(next) {
       var index = path.join(assetsPath, 'routes', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');`, next);
+      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');\n`, next);
     },
 
     function serviceFile(next) {
@@ -99,7 +99,7 @@ function installJavascript(names, callback) {
     },
     function serviceIndex(next) {
       var index = path.join(assetsPath, 'services', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');`, next);
+      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');\n`, next);
     }
   ], callback);
 }

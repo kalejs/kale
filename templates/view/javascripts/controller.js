@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('KALE_NAME_CLASSApp.controllers', [])
+angular.module('app.controllers')
   .controller('PLURAL_NAME_CAPITALIZEDIndexController', ['$scope', '$state', 'SINGULAR_NAME_CAPITALIZED', 'PLURAL_NAME_LOWERCASE',
     function($scope, $state, SINGULAR_NAME_CAPITALIZED, PLURAL_NAME_LOWERCASE) {
       $scope.PLURAL_NAME_LOWERCASE = PLURAL_NAME_LOWERCASE;
@@ -14,13 +14,13 @@ angular.module('KALE_NAME_CLASSApp.controllers', [])
     }
   ])
 
-  .controller('PLURAL_NAME_CLASSShowController', ['$scope', 'SINGULAR_NAME_LOWERCASE',
+  .controller('PLURAL_NAME_CAPITALIZEDShowController', ['$scope', 'SINGULAR_NAME_LOWERCASE',
     function($scope, SINGULAR_NAME_LOWERCASE) {
       $scope.SINGULAR_NAME_LOWERCASE = SINGULAR_NAME_LOWERCASE;
     }
   ])
 
-  .controller('PLURAL_NAME_CLASSNewController', ['$scope', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
+  .controller('PLURAL_NAME_CAPITALIZEDNewController', ['$scope', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
     function($scope, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
       $scope.SINGULAR_NAME_LOWERCASE = new SINGULAR_NAME_CAPITALIZED();
 
@@ -32,12 +32,12 @@ angular.module('KALE_NAME_CLASSApp.controllers', [])
     }
   ])
 
-  .controller('PLURAL_NAME_CLASSEditController', ['$scope', '$state', 'SINGULAR_NAME_LOWERCASE',
-    function($scope, $state, SINGULAR_NAME_LOWERCASE) {
+  .controller('PLURAL_NAME_CAPITALIZEDEditController', ['$scope', '$state', 'SINGULAR_NAME_CAPITALIZED', 'SINGULAR_NAME_LOWERCASE',
+    function($scope, $state, SINGULAR_NAME_CAPITALIZED, SINGULAR_NAME_LOWERCASE) {
       $scope.SINGULAR_NAME_LOWERCASE = SINGULAR_NAME_LOWERCASE;
 
       $scope.update = function() {
-        $scope.SINGULAR_NAME_LOWERCASE.$update(function() {
+        new SINGULAR_NAME_CAPITALIZED($scope.SINGULAR_NAME_LOWERCASE).$update(function() {
           $state.go('PLURAL_NAME_LOWERCASE');
         });
       };

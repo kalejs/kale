@@ -1,3 +1,4 @@
 'use strict';
 
-angular.module('KALE_NAME_CLASSApp.services', []);
+angular.module('app.services', []);
+

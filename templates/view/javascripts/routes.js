@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('KALE_NAME_CLASSApp')
+angular.module('app')
   .config([ '$stateProvider',
     function($stateProvider) {
       $stateProvider
         .state('PLURAL_NAME_LOWERCASE_DASHED', {
-          url:'/PLURAL_NAME_LOWERCASE_DASHED',
-          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/index.html',
-          controller:'PLURAL_NAME_CAPITALIZEDIndexController',
+          url: '/PLURAL_NAME_LOWERCASE_DASHED',
+          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/index.html',
+          controller: 'PLURAL_NAME_CAPITALIZEDIndexController',
           resolve: {
             PLURAL_NAME_LOWERCASE: ['$q', 'SINGULAR_NAME_CAPITALIZED', function($q, SINGULAR_NAME_CAPITALIZED) {
               var deferred = $q.defer();
@@ -23,14 +23,14 @@ angular.module('KALE_NAME_CLASSApp')
           }
         })
         .state('newSINGULAR_NAME_CAPITALIZED', {
-          url:'/PLURAL_NAME_LOWERCASE_DASHED/new',
-          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/new.html',
-          controller:'PLURAL_NAME_CAPITALIZEDNewController'
+          url: '/PLURAL_NAME_LOWERCASE_DASHED/new',
+          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/new.html',
+          controller: 'PLURAL_NAME_CAPITALIZEDNewController'
         })
         .state('showSINGULAR_NAME_CAPITALIZED', {
-          url:'/PLURAL_NAME_LOWERCASE_DASHED/:id',
-          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/show.html',
-          controller:'PLURAL_NAME_CAPITALIZEDShowController',
+          url: '/PLURAL_NAME_LOWERCASE_DASHED/:id',
+          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/show.html',
+          controller: 'PLURAL_NAME_CAPITALIZEDShowController',
           resolve: {
             SINGULAR_NAME_LOWERCASE: ['$q', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
               function($q, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
@@ -49,9 +49,9 @@ angular.module('KALE_NAME_CLASSApp')
           }
         })
         .state('editSINGULAR_NAME_CAPITALIZED', {
-          url:'/PLURAL_NAME_LOWERCASE_DASHED/:id/edit',
-          templateUrl:'/assets/views/PLURAL_NAME_LOWERCASE_DASHED/edit.html',
-          controller:'PLURAL_NAME_CAPITALIZEDEditController',
+          url: '/PLURAL_NAME_LOWERCASE_DASHED/:id/edit',
+          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/edit.html',
+          controller: 'PLURAL_NAME_CAPITALIZEDEditController',
           resolve: {
             SINGULAR_NAME_LOWERCASE: ['$q', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
               function($q, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {

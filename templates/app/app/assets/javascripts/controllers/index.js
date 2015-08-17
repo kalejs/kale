@@ -1,5 +1,5 @@
 'use strict';
 
-angular.module('KALE_NAME_CLASSApp.controllers', []);
+angular.module('app.controllers', []);
 
 require('./home');

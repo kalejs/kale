@@ -7,6 +7,7 @@ _.str.inflection = require('inflection');
 module.exports = function(name, options) {
   var modelGenerator = require('./model');
   var controllerGenerator = require('./controller');
+  var viewGenerator = require('./view');
 
   var underscored = _.str.underscored(name);
   var singular = _.str.inflection.singularize(underscored);
@@ -15,6 +16,7 @@ module.exports = function(name, options) {
 
   modelGenerator(singular, options);
   controllerGenerator(controllerName, options);
+  viewGenerator(controllerName, options);
 
   console.log(`Scaffolding generated.`);
 };

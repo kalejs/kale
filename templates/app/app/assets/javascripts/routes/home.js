@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('KALE_NAME_CLASSApp')
+angular.module('app')
   .config([ '$stateProvider',
     function($stateProvider) {
       $stateProvider
         .state('home', {
-          url:'/',
-          templateUrl:'/assets/views/home/index.html',
-          controller:'HomepageController',
+          url: '/',
+          templateUrl: '/assets/views/home/index.html',
+          controller: 'HomepageController',
         });
     }
   ]);

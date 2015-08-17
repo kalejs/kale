@@ -28,7 +28,6 @@ exports.up = function(knex) {
   return knex.schema.createTable('${tableName}', function(table) {
     table.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
 
-
     table.timestamps();
   });
 };
@@ -42,7 +41,7 @@ exports.down = function(knex) {
 function _modelTemplate(className, tableName) {
   return `'use strict';
 
-var bookshelf = require('../db');
+var bookshelf = require('../../db');
 
 var ${className} = bookshelf.Model.extend({
   tableName: '${tableName}',
