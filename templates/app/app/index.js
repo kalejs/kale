@@ -19,8 +19,9 @@ app.use(cors());
 app.use(body());
 app.use(json(config.json));
 app.use(middleware.config);
-
 app.use(middleware.models);
+
+app.use(middleware.errors);
 app.use(router.routes());
 app.use(router.allowedMethods());
 
