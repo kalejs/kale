@@ -20,6 +20,16 @@ function _controllerTemplate(className, singular, plural) {
 
 var _ = require('lodash');
 
+var _fetch${className} = function *() {
+  var model = new this.models.${className}({ id: this.params.id });
+
+  try {
+    return yield model.fetch({ require: true });
+  } catch (err) {
+    this.throw(this.models.${className}.NotFoundError, 404);
+  }
+}
+
 var index = function *() {
   var query = this.models.${className}.collection().query(function(knex) {
     knex.limit(50).offset(0).orderBy('created_at', 'asc');
@@ -33,7 +43,7 @@ var index = function *() {
 };
 
 var show = function *() {
-  var ${singular} = yield _fetch${className}(this);
+  var ${singular} = yield _fetch${className}.call(this);
 
   this.body = {
     ${singular}: ${singular}.toJSON()
@@ -52,7 +62,7 @@ var create = function *() {
 };
 
 var update = function *() {
-  var ${singular} = yield _fetch${className}(this);
+  var ${singular} = yield _fetch${className}.call(this);
 
   yield ${singular}.save(_${singular}Params(this.request.body));
 
@@ -63,17 +73,12 @@ var update = function *() {
 };
 
 var destroy = function *() {
-  var ${singular} = yield _fetch${className}(this);
+  var ${singular} = yield _fetch${className}.call(this);
 
   yield ${singular}.destroy();
 
   this.status = 204;
 };
-
-function *_fetch${className}(ctx) {
-  var model = new ctx.models.${className}({ id: ctx.params.id });
-  return yield model.fetch({ require: true });
-}
 
 function _${singular}Params(body) {
   // TODO: Whitelist params for creating & updating a ${className}.
