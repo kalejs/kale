@@ -4,8 +4,6 @@ module.exports = function *(next) {
   try {
     yield next;
   } catch (err) {
-    console.log(err.stack);
-
     switch (err.status) {
       case 400:
         this.status = 400;
@@ -23,7 +21,7 @@ module.exports = function *(next) {
         break;
 
       default:
-        console.log(err.message);
+        console.log(err.stack);
         this.status = 500;
         this.body = { error: 'Internal Server Error' };
     }
