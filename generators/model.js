@@ -29,13 +29,13 @@ function _userMigrationTemplate(tableName) {
   return `'use strict';
 
 exports.up = function(knex) {
-  return knex.schema.createTable('${tableName}', function(table) {
-    table.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
+  return knex.schema.createTable('${tableName}', function(t) {
+    t.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
 
-    table.string('email').unique().notNullable();
-    table.string('password_digest').notNullable();
+    t.string('email').unique().notNullable();
+    t.string('password_digest').notNullable();
 
-    table.timestamps();
+    t.timestamps();
   });
 };
 
@@ -49,10 +49,10 @@ function _migrationTemplate(tableName) {
   return `'use strict';
 
 exports.up = function(knex) {
-  return knex.schema.createTable('${tableName}', function(table) {
-    table.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
+  return knex.schema.createTable('${tableName}', function(t) {
+    t.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
 
-    table.timestamps();
+    t.timestamps();
   });
 };
 
