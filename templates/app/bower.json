@@ -1,5 +1,5 @@
 {
-  "name": "KALE_NAME",
+  "name": "KALE_APP_NAME",
   "dependencies": {
     "bootstrap": "~3.3.5",
     "angular": "~1.4.4",

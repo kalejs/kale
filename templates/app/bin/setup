@@ -19,7 +19,7 @@ if [ ! -f .env ]; then
 fi
 
 # Create and migrate the database
-createuser -s KALE_NAME_UNDERSCORED
-createdb KALE_NAME_UNDERSCORED_development -U KALE_NAME_UNDERSCORED
+createuser -s KALE_UNDERSCORED_NAME
+createdb KALE_UNDERSCORED_NAME_development -U KALE_UNDERSCORED_NAME
 
 kale migrate

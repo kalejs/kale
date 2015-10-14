@@ -3,7 +3,7 @@
 var path = require('path');
 
 module.exports = {
-  appName: 'KALE_NAME',
+  appName: 'KALE_APP_NAME',
 
   db: {
     client: 'pg',

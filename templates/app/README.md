@@ -1,4 +1,4 @@
-# KALE_NAME
+# KALE_APP_NAME
 
 ## Installation
 
