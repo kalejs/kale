@@ -30,7 +30,7 @@ function _userMigrationTemplate(tableName) {
 
 exports.up = function(knex) {
   return knex.schema.createTable('${tableName}', function(t) {
-    t.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
+    t.uuid('id').primary().defaultsTo(knex.raw('gen_random_uuid()'));
 
     t.string('email').unique().notNullable();
     t.string('password_digest').notNullable();
@@ -50,7 +50,7 @@ function _migrationTemplate(tableName) {
 
 exports.up = function(knex) {
   return knex.schema.createTable('${tableName}', function(t) {
-    t.uuid('id').primary().defaultsTo(knex.raw('uuid_generate_v4()'));
+    t.uuid('id').primary().defaultsTo(knex.raw('gen_random_uuid()'));
 
     t.timestamps();
   });
