@@ -51,12 +51,23 @@ program
 
 program
   .command('migrate')
-  .alias('m')
   .action(function() {
     var knex = path.join('.', 'node_modules', '.bin', 'knex');
     var knexfile = path.join('.', 'db', 'knexfile.js');
+    console.log(`${knex} migrate:latest --knexfile ${knexfile}`);
     var result = execSync(`${knex} migrate:latest --knexfile ${knexfile}`, { encoding: 'utf8' });
     console.log(result);
   });
+
+program
+  .command('migrate:test')
+  .action(function() {
+    var env = _.extend({}, process.env, { NODE_ENV: 'test' });
+    var knex = path.join('.', 'node_modules', '.bin', 'knex');
+    var knexfile = path.join('.', 'db', 'knexfile.js');
+    var result = execSync(`NODE_ENV=test ${knex} migrate:latest --knexfile ${knexfile}`, { encoding: 'utf8' });
+    console.log(result);
+  });
+
 
 program.parse(process.argv);

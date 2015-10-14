@@ -14,7 +14,6 @@ cd $DIR/..
 
 # Set up configurable environment variables for Foreman
 if [ ! -f .env ]; then
-  echo "NODE_ENV=development" > .env
   echo "PORT=$DEFAULT_PORT" >> .env
 fi
 

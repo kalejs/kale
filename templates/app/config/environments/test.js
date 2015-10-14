@@ -1,5 +1,13 @@
 'use strict';
 
 module.exports = {
-  url: 'http://test.host'
+  db: {
+    connection: {
+      host: '127.0.0.1',
+      user: 'KALE_NAME_UNDERSCORED',
+      database: 'KALE_NAME_UNDERSCORED_test'
+    },
+    debug: true
+  },
+
 };
