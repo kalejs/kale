@@ -54,6 +54,7 @@ function replaceContents(filename, names, callback) {
         .replaceAll('SINGULAR_NAME_LOWERCASE', names.singular.lowercase)
         .replaceAll('PLURAL_NAME_CAPITALIZED', names.plural.capitalized)
         .replaceAll('PLURAL_NAME_LOWERCASE_DASHED', names.plural.lowercaseDashed)
+        .replaceAll('PLURAL_NAME_LOWERCASE_CAMELIZED', names.plural.lowercaseCamelized)
         .replaceAll('PLURAL_NAME_LOWERCASE', names.plural.lowercase);
 
       fs.writeFile(filename, replacedContent, next);
@@ -64,42 +65,48 @@ function replaceContents(filename, names, callback) {
 function installJavascript(names, callback) {
   var templatePath = path.join(__dirname, '..', 'templates', 'view');
   var assetsPath = path.join('.', 'app', 'assets', 'javascripts');
-  var controller = path.join(templatePath, 'javascripts', 'controller.js');
+  var controller = path.join(templatePath, 'javascripts', 'controller');
   var routes = path.join(templatePath, 'javascripts', 'routes.js');
   var service = path.join(templatePath, 'javascripts', 'service.js');
 
   async.series([
+    function controllersDir(next) {
+      fs.copy(controller, path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}`), next);
+    },
+    function controllersReplace(next) {
+      replaceContentsInDirs([path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}`)], names, next);
+    },
+    function controllersIndex(next) {
+      var index = path.join(assetsPath, 'controllers', 'index.js');
+      fs.appendFile(index, `require('./${names.plural.lowercaseCamelized}');\n`, next);
+    },
     function controllerFile(next) {
-      fs.copy(controller, path.join(assetsPath, 'controllers', `${names.plural.lowercaseDashed}.js`), next);
+      fs.copy(`${controller}.js`, path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}.js`), next);
     },
     function controllerReplace(next) {
-      replaceContents(path.join(assetsPath, 'controllers', `${names.plural.lowercaseDashed}.js`), names, next);
-    },
-    function controllerIndex(next) {
-      var index = path.join(assetsPath, 'controllers', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');\n`, next);
+      replaceContents(path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}.js`), names, next);
     },
 
     function routesFile(next) {
-      fs.copy(routes, path.join(assetsPath, 'routes', `${names.plural.lowercaseDashed}.js`), next);
+      fs.copy(routes, path.join(assetsPath, 'routes', `${names.plural.lowercaseCamelized}.js`), next);
     },
     function routesReplace(next) {
-      replaceContents(path.join(assetsPath, 'routes', `${names.plural.lowercaseDashed}.js`), names, next);
+      replaceContents(path.join(assetsPath, 'routes', `${names.plural.lowercaseCamelized}.js`), names, next);
     },
     function routesIndex(next) {
       var index = path.join(assetsPath, 'routes', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');\n`, next);
+      fs.appendFile(index, `require('./${names.plural.lowercaseCamelized}');\n`, next);
     },
 
     function serviceFile(next) {
-      fs.copy(service, path.join(assetsPath, 'services', `${names.plural.lowercaseDashed}.js`), next);
+      fs.copy(service, path.join(assetsPath, 'services', `${names.plural.lowercaseCamelized}.js`), next);
     },
     function serviceReplace(next) {
-      replaceContents(path.join(assetsPath, 'services', `${names.plural.lowercaseDashed}.js`), names, next);
+      replaceContents(path.join(assetsPath, 'services', `${names.plural.lowercaseCamelized}.js`), names, next);
     },
     function serviceIndex(next) {
       var index = path.join(assetsPath, 'services', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseDashed}');\n`, next);
+      fs.appendFile(index, `require('./${names.plural.lowercaseCamelized}');\n`, next);
     }
   ], callback);
 }
@@ -133,6 +140,7 @@ module.exports = function(plural) {
     plural: {
       lowercase: plural,
       lowercaseDashed: _.str.dasherize(plural),
+      lowercaseCamelized: camelized,
       capitalized: _.str.classify(plural)
     }
   };
