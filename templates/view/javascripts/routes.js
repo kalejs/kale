@@ -5,6 +5,10 @@ angular.module('app')
     function($stateProvider) {
       $stateProvider
         .state('PLURAL_NAME_LOWERCASE_DASHED', {
+          abstract: true,
+          template: '<ui-view />'
+        })
+        .state('PLURAL_NAME_LOWERCASE_DASHED.index', {
           url: '/PLURAL_NAME_LOWERCASE_DASHED',
           templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/index.html',
           controller: 'PLURAL_NAME_CAPITALIZEDIndexController',
@@ -22,12 +26,12 @@ angular.module('app')
             }]
           }
         })
-        .state('newSINGULAR_NAME_CAPITALIZED', {
+        .state('PLURAL_NAME_LOWERCASE_DASHED.new', {
           url: '/PLURAL_NAME_LOWERCASE_DASHED/new',
           templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/new.html',
           controller: 'PLURAL_NAME_CAPITALIZEDNewController'
         })
-        .state('showSINGULAR_NAME_CAPITALIZED', {
+        .state('PLURAL_NAME_LOWERCASE_DASHED.show', {
           url: '/PLURAL_NAME_LOWERCASE_DASHED/:id',
           templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/show.html',
           controller: 'PLURAL_NAME_CAPITALIZEDShowController',
@@ -48,7 +52,7 @@ angular.module('app')
             ]
           }
         })
-        .state('editSINGULAR_NAME_CAPITALIZED', {
+        .state('PLURAL_NAME_LOWERCASE_DASHED.edit', {
           url: '/PLURAL_NAME_LOWERCASE_DASHED/:id/edit',
           templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/edit.html',
           controller: 'PLURAL_NAME_CAPITALIZEDEditController',
