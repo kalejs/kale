@@ -8,6 +8,7 @@ var jscs = require('gulp-jscs');
 var jshint = require('gulp-jshint');
 var path = require('path');
 var src = path.join('**', '*.js');
+var Watcher = require('broccoli-sane-watcher');
 
 gulp.task('default', ['jshint', 'jscs']);
 gulp.task('test', ['jshint', 'jscs']);
@@ -40,7 +41,7 @@ gulp.task('assets:build', function() {
 gulp.task('assets:watch', function() {
   var brocfile = require('./Brocfile.js');
   var builder = new broccoli.Builder(brocfile);
-  var watcher = new broccoli.Watcher(builder, { interval: 100 });
+  var watcher = new Watcher(builder, { interval: 100 });
 
   return watcher.on('change', function(output) {
     console.log('\n\nChange detected');

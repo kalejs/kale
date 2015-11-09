@@ -1,7 +1,7 @@
 'use strict';
 
 var assetRev = require('broccoli-asset-rev');
-var browserify = require('broccoli-browserify');
+var browserify = require('broccoli-fast-browserify');
 var env = process.env.BROCCOLI_ENV || 'development';
 var funnel = require('broccoli-funnel');
 var less = require('broccoli-less-single');
@@ -9,15 +9,17 @@ var mergeTrees = require('broccoli-merge-trees');
 var uglifyJs = require('broccoli-uglify-js');
 
 /*
- * javascript (browserify, uglifyjs)
+ * javascript
  */
 var js = browserify('app/assets/javascripts', {
-  entries: ['./app.js'],
-  outputFile: 'app.js',
-  browserify: { debug: env !== 'development' },
-  transform: [
-    'debowerify'
-  ]
+  browserify: {
+    debug: env === 'development'
+  },
+  bundles: {
+    'application.js': {
+      entryPoints: ['application.js']
+    }
+  }
 });
 
 if (env !== 'development') {
@@ -31,7 +33,7 @@ js = funnel(js, {
 /*
  * css (less)
  */
-var css = less('app/assets/stylesheets', 'app.css.less', 'app.css', {
+var css = less('app/assets/stylesheets', 'application.css.less', 'application.css', {
   paths: ['./app/assets/stylesheets', './app/assets/bower_components'],
   compress: env !== 'development'
 });
