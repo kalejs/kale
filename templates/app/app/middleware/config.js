@@ -2,7 +2,7 @@
 
 var config = require('../../config');
 
-module.exports = function *(next) {
-  this.config = config;
-  yield next;
+module.exports = (ctx, next) => {
+  ctx.config = config;
+  return next();
 };

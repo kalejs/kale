@@ -1,10 +1,10 @@
 'use strict';
 
-var ping = function *() {
-  this.status = 200;
-  this.body = 'pong';
+var ping = (ctx) => {
+  ctx.status = 200;
+  ctx.body = 'pong';
 };
 
 module.exports = {
-  ping: ping
+  ping
 };

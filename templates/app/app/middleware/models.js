@@ -2,7 +2,7 @@
 
 var models = require('../models');
 
-module.exports = function *(next) {
-  this.models = models;
-  yield next;
+module.exports = (ctx, next) => {
+  ctx.models = models;
+  return next();
 };

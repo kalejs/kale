@@ -1,29 +1,27 @@
 'use strict';
 
-module.exports = function *(next) {
-  try {
-    yield next;
-  } catch (err) {
+module.exports = (ctx, next) => {
+  return next().catch((err) => {
     switch (err.status) {
       case 400:
-        this.status = 400;
-        this.body = { error: err.message };
+        ctx.status = 400;
+        ctx.body = { error: err.message };
         break;
 
       case 401:
-        this.status = 401;
-        this.body = { error: 'Unauthorized' };
+        ctx.status = 401;
+        ctx.body = { error: 'Unauthorized' };
         break;
 
       case 404:
-        this.status = 404;
-        this.body = { error: 'NotFound' };
+        ctx.status = 404;
+        ctx.body = { error: 'Not Found' };
         break;
 
       default:
         console.log(err.stack);
-        this.status = 500;
-        this.body = { error: 'Internal Server Error' };
+        ctx.status = 500;
+        ctx.body = { error: 'Internal Server Error' };
     }
-  }
+  });
 };
