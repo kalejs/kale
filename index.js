@@ -60,6 +60,16 @@ program
   });
 
 program
+  .command('migrate:rollback')
+  .action(function() {
+    var knex = path.join('.', 'node_modules', '.bin', 'knex');
+    var knexfile = path.join('.', 'db', 'knexfile.js');
+    console.log(`${knex} migrate:rollback --knexfile ${knexfile}`);
+    var result = execSync(`${knex} migrate:rollback --knexfile ${knexfile}`, { encoding: 'utf8' });
+    console.log(result);
+  });
+
+program
   .command('migrate:test')
   .action(function() {
     var env = _.extend({}, process.env, { NODE_ENV: 'test' });
