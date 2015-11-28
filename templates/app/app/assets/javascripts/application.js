@@ -20,7 +20,15 @@ require('./services');
 angular.module('app')
   .config(['$locationProvider', function($locationProvider) {
     $locationProvider.html5Mode(true);
-  }]).run(['$state', function($state) {
+  }])
+  .config(['$urlRouterProvider', function($urlRouterProvider) {
+    $urlRouterProvider.otherwise(function($injector, $location) {
+      var state = $injector.get('$state');
+      state.go('errors.404');
+      return $location.path();
+    });
+  }])
+  .run(['$state', function($state) {
     $state.go('home');
   }]);
 

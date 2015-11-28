@@ -1,0 +1,22 @@
+<header>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" ui-sref="home.show">KALE_APP_NAME</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a ui-sref="home.show">Home</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <div ui-view></div>
+</div>
+
+<footer>
+  &copy; <script>document.write(new Date().getFullYear())</script> KALE_APP_NAME.
+</footer>

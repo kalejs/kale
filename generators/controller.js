@@ -136,7 +136,7 @@ function _writeRoutes(camelized) {
   var lines = routes.split('\n');
 
   var exportLine = _.findLastIndex(lines, function(text) {
-    _.str.startsWith(text, '});');
+    _.str.startsWith(text, 'route.all(\'*\'');
   });
 
   lines.splice(exportLine - 1, 0, template);
