@@ -71,7 +71,7 @@ function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
 
 function replacePlaceholderWithAppName(filename, appName, callback) {
   var underscored = s.underscored(appName);
-  var camelCased = s.camelized(underscored);
+  var camelCased = s.camelize(underscored);
   var classCased = s.classify(underscored);
   var dashed = s.dasherize(underscored);
   var contents;
