@@ -65,21 +65,23 @@ exports.down = function(knex) {
 function _userModelTemplate(className, tableName) {
   return `'use strict';
 
-var bookshelf = require('../../db');
+const bookshelf = require('../../db');
 
-var ${className} = bookshelf.Model.extend({
+const ${className} = bookshelf.Model.extend({
   tableName: '${tableName}',
   hasTimestamps: true,
   hasSecurePassword: true,
   visible: ['id', 'email', 'created_at']
 }, {
 
-  authenticate: function *(email, password) {
-    var normalizedEmail = email.toLowerCase().trim();
-    var user = yield new this({ email: normalizedEmail }).fetch({ require: true });
-    var authenticated = user.authenticate(password);
+  authenticate: (email, password) => {
+    let normalizedEmail = email.toLowerCase().trim();
 
-    return authenticated && user;
+    ${className}.forge({ email: normalizedEmail })
+      .fetch({ require: true })
+      .then((model) => {
+        return model && model.authenticate(password);
+      });
   }
 
 });
@@ -91,9 +93,9 @@ module.exports = bookshelf.model('${className}', ${className});
 function _modelTemplate(className, tableName) {
   return `'use strict';
 
-var bookshelf = require('../../db');
+const bookshelf = require('../../db');
 
-var ${className} = bookshelf.Model.extend({
+const ${className} = bookshelf.Model.extend({
   tableName: '${tableName}',
   hasTimestamps: true
 });

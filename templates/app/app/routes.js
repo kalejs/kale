@@ -1,10 +1,8 @@
 'use strict';
 
-var controllers = require('../app/controllers');
-var router = require('koa-router')({
-  prefix: '/api/v1'
+var controllers = require('./controllers');
+var router = require('koa-simple-router');
+
+module.exports = router({ prefix: '/api/v1' }, (route) => {
+  route.get('/ping', controllers.ping.ping);
 });
-
-router.get('/ping', controllers.ping.ping);
-
-module.exports = router;

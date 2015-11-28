@@ -18,67 +18,65 @@ module.exports = {
 function _controllerTemplate(className, singular, plural) {
   return `'use strict';
 
-var _ = require('lodash');
+const _ = require('lodash');
 
-var _fetch${className} = function *() {
-  var model = new this.models.${className}({ id: this.params.id });
+const index = (ctx) => {
+  return ctx.models.${className}.collection()
+    .query(function(knex) {
+      knex.limit(50).offset(0).orderBy('created_at', 'asc');
+    })
+    .fetch()
+    .then((${plural}) => {
+      ctx.body = {
+        ${plural}
+      };
+    });
+};
 
-  try {
-    return yield model.fetch({ require: true });
-  } catch (err) {
-    this.throw(this.models.${className}.NotFoundError, 404);
-  }
-}
-
-var index = function *() {
-  var query = this.models.${className}.collection().query(function(knex) {
-    knex.limit(50).offset(0).orderBy('created_at', 'asc');
+const show = (ctx) => {
+  return _fetch${className}(ctx).then((${singular}) => {
+    ctx.body = {
+      ${singular}
+    };
   });
-
-  var ${plural} = yield query.fetch();
-
-  this.body = {
-    ${plural}: ${plural}.toJSON()
-  };
 };
 
-var show = function *() {
-  var ${singular} = yield _fetch${className}.call(this);
+const create = (ctx) => {
+  let params = _${singular}Params(ctx.request.body);
+  let ${singular} = new ctx.models.${className}(params);
 
-  this.body = {
-    ${singular}: ${singular}.toJSON()
-  };
+  return ${singular}.save().then((${singular}) => {
+    ctx.status = 201;
+    ctx.body = {
+      ${singular}
+    };
+  });
 };
 
-var create = function *() {
-  var ${singular} = new this.models.${className}(_${singular}Params(this.request.body));
+const update = (ctx) => {
+  return _fetch${className}(ctx).then((${singular}) => {
+    let params = _${singular}Params(ctx.request.body);
 
-  yield ${singular}.save();
-
-  this.status = 201;
-  this.body = {
-    ${singular}: ${singular}.toJSON()
-  };
+    return ${singular}.save(params, { patch: true })
+  }).then((${singular}) => {
+    ctx.status = 200;
+    ctx.body = {
+      ${singular}
+    };
+  });
 };
 
-var update = function *() {
-  var ${singular} = yield _fetch${className}.call(this);
-
-  yield ${singular}.save(_${singular}Params(this.request.body));
-
-  this.status = 200;
-  this.body = {
-    ${singular}: ${singular}.toJSON()
-  };
+const destroy = (ctx) => {
+  return _fetch${className}(ctx).then((${singular}) => {
+    return ${singular}.destroy();
+  }).then(() => {
+    ctx.status = 204;
+  });
 };
 
-var destroy = function *() {
-  var ${singular} = yield _fetch${className}.call(this);
-
-  yield ${singular}.destroy();
-
-  this.status = 204;
-};
+function _fetch${className}(ctx) {
+  return ctx.models.${className}.forge({ id: ctx.params.id }).fetch({ require: true });
+}
 
 function _${singular}Params(body) {
   // TODO: Whitelist params for creating & updating a ${className}.
@@ -86,11 +84,11 @@ function _${singular}Params(body) {
 }
 
 module.exports = {
-  index: index,
-  show: show,
-  create: create,
-  update: update,
-  destroy: destroy
+  index,
+  show,
+  create,
+  update,
+  destroy
 };
 `;
 }
@@ -131,14 +129,14 @@ router.del('/${dasherized}/:id', controllers.${camelized}.destroy);
 }
 
 function _writeRoutes(camelized) {
-  var routesPath = path.join('.', 'config', 'routes.js');
+  var routesPath = path.join('.', 'app', 'routes.js');
   var template = _routerTemplate(camelized);
 
   var routes = fs.readFileSync(routesPath, 'utf8');
   var lines = routes.split('\n');
 
   var exportLine = _.findLastIndex(lines, function(text) {
-    _.str.startsWith(text, 'module.exports');
+    _.str.startsWith(text, '});');
   });
 
   lines.splice(exportLine - 1, 0, template);
