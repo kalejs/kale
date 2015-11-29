@@ -4,12 +4,12 @@ The node.js framework for developers who deliver on time.
 
 ## What is it?
 
-Kale.js is a set of lightweight, opinionated generators for building highly-scalable koa-based node.js APIs with ease and speed.
+Kale.js is a set of lightweight, opinionated generators for building highly-scalable [koa](http://koajs.com/)-based node.js APIs with ease and speed.
 
 Kale.js consists of 6 Generators:
   One to [build an app](#usage),
   one to [build a controller](#controller-generator),
-  one to [build a model](#model-generator) (or [an authenticatable model](#authenticated-model-generator)),
+  one to [build a model](#model-generator),
   one to [build a set of views](#view-generator),
   one to [build a migration](#migration-generator), and
   one to [build scaffolding](#scaffold-generator).
@@ -96,19 +96,6 @@ kale generate model Thing
 This will create a new `Thing` model (referencing a `things` table) named `thing.js` in the `app/models` directory.
 
 This will also create an empty migration named `<timestamp>_create_things.js` in the `db/migrations` directory.
-
-#### Authenticated Model Generator
-
-To generate an authenticatable model, you can use the User generator:
-
-```
-kale generate authenticated User
-```
-
-This will run the normal model generator, but also include `hasSecurePassword: true`.
-
-The model will also include authentication methods to make it easy to `User.authenticate(email, password)`
-
 
 ### Controller Generator
 
