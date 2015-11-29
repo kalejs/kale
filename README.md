@@ -14,23 +14,24 @@ Kale.js consists of 6 Generators:
   one to [build a migration](#migration-generator), and
   one to [build scaffolding](#scaffold-generator).
 
+Overall, Kale.js builds apps that are fast, easy-to-read, and follow industry best practices.
+
 A Kale.js application:
 
-* Built on [koa](http://koajs.com/) and makes heavy use of ES6 Generators.
-* Uses [bookshelf.js](http://bookshelfjs.org/) for object Models.
+* Built on [koa](http://koajs.com/) and makes heavy use of ES6 Promises.
+* Uses [bookshelf.js](http://bookshelfjs.org/) for an ORM.
 * Backed by [Postgresql](http://www.postgresql.org/) by default.
 * Includes basic single-page-app using [AngularJS](https://angularjs.org/), installed with [bower](http://bower.io/).
-* Sets up [Gulp](https://github.com/gulpjs/gulp) with basic [linting with jshint](https://github.com/jshint/jshint) and [code-style checking with jscs](https://github.com/jscs-dev/node-jscs)
 * Includes an asset pipeline using [Broccoli](http://broccolijs.com/) with development file watching and reload.
 * Front-end javascript uses [browserify](http://browserify.org/) for node-style `require` statements.
-* Front-end stylesheets are compiled with [less](http://lesscss.org/).
+* Sets up [Gulp](https://github.com/gulpjs/gulp) with basic [linting with jshint](https://github.com/jshint/jshint) and [code-style checking with jscs](https://github.com/jscs-dev/node-jscs)
+* Front-end stylesheets are compiled with [SASS/SCSS](http://sass-lang.com/).
 * Generates models with UUIDs as the primary key by default.
-* Makes authentication simple and secure by using [bookshelf-secure-password](https://github.com/venables/bookshelf-secure-password).
-  * Simply add `hasSecurePassword: true` to your model.
-* Is a stateless, secure JSON API with [helmet](https://github.com/helmetjs/helmet) secure headers included by default.
-* Does not include cookies or session support by default (so no need for CSRF protection)
+* Is a stateless, secure JSON API.
+  * Does not include cookies or cookie-based sessions by default (so no need for CSRF protection)
+* Security headers provided by [helmet](https://github.com/venables/koa-helmet), and [CORS](https://github.com/koajs/cors).
 * Includes environment-specific config according to [the 12-factor app](http://12factor.net/) methodology.
-* Includes a [Procfile](https://devcenter.heroku.com/articles/procfile) for easy deployment.
+* Includes a [Procfile](https://devcenter.heroku.com/articles/procfile) for easy deployment to heroku.
 
 ## Installation
 
