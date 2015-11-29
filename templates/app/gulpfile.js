@@ -16,7 +16,6 @@ gulp.task('test', ['jshint', 'jscs']);
 gulp.task('jshint', function() {
   gulp.src(src)
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'));
 });
 

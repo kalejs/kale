@@ -5,7 +5,7 @@
 DEFAULT_PORT=3000
 
 # Set up npm dependencies
-npm install -g nodemon gulp bower
+npm install -g nodemon gulp bower jshint jscs
 npm install
 bower install
 

@@ -42,7 +42,6 @@
     "dotenv": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-jscs": "^3.0.2",
-    "gulp-jshint": "^2.0.0",
-    "jshint-stylish": "^2.0.1"
+    "gulp-jshint": "^2.0.0"
   }
 }
