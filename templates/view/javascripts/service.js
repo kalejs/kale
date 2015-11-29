@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('app.services')
-  .factory('SINGULAR_NAME_CAPITALIZED', ['$resource', function($resource) {
-    return $resource('/api/v1/PLURAL_NAME_LOWERCASE_DASHED/:id', { id: '@id' }, {
+  .factory('KaleRecord', ['$resource', function($resource) {
+    return $resource('/api/v1/kale-records/:id', { id: '@id' }, {
       update: {
         method: 'PUT'
       }

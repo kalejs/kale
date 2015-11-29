@@ -71,8 +71,6 @@ function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
 
 function replacePlaceholderWithAppName(filename, appName, callback) {
   var underscored = s.underscored(appName);
-  var camelCased = s.camelize(underscored);
-  var classCased = s.classify(underscored);
   var dashed = s.dasherize(underscored);
   var contents;
 
@@ -85,9 +83,7 @@ function replacePlaceholderWithAppName(filename, appName, callback) {
     },
     function writeFile(next) {
       var replacedContent = contents
-        .replaceAll('KALE_CAMEL_CASED_NAME', camelCased)
-        .replaceAll('KALE_CLASS_CASED_NAME', classCased)
-        .replaceAll('KALE_UNDERSCORED_NAME', underscored)
+        .replaceAll('kale_records', underscored)
         .replaceAll('KALE_APP_NAME', appName)
         .replaceAll('KALE_DASHERIZED_NAME', dashed);
 

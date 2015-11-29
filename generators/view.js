@@ -50,12 +50,12 @@ function replaceContents(filename, names, callback) {
     },
     function writeFile(next) {
       var replacedContent = contents
-        .replaceAll('SINGULAR_NAME_CAPITALIZED', names.singular.capitalized)
-        .replaceAll('SINGULAR_NAME_LOWERCASE', names.singular.lowercase)
-        .replaceAll('PLURAL_NAME_CAPITALIZED', names.plural.capitalized)
-        .replaceAll('PLURAL_NAME_LOWERCASE_DASHED', names.plural.lowercaseDashed)
-        .replaceAll('PLURAL_NAME_LOWERCASE_CAMELIZED', names.plural.lowercaseCamelized)
-        .replaceAll('PLURAL_NAME_LOWERCASE', names.plural.lowercase);
+        .replaceAll('KaleRecord', names.singular.capitalized)
+        .replaceAll('kaleRecord', names.singular.lowercase)
+        .replaceAll('KaleRecords', names.plural.capitalized)
+        .replaceAll('kale-records', names.plural.lowercaseDashed)
+        .replaceAll('kaleRecords', names.plural.lowercaseCamelized)
+        .replaceAll('kaleRecords', names.plural.lowercase);
 
       fs.writeFile(filename, replacedContent, next);
     }
@@ -114,7 +114,7 @@ function installJavascript(names, callback) {
 function installViews(names, callback) {
   var templatePath = path.join(__dirname, '..', 'templates', 'view');
   var viewsPath = path.join(templatePath, 'views');
-  var outputPath = path.join('.', 'app', 'assets', 'views', `${names.plural.lowercaseDashed}`);
+  var outputPath = path.join('.', 'app', 'assets', 'views', `${names.plural.lowercaseCamelized}`);
 
   async.series([
     function copyViews(next) {

@@ -4,20 +4,20 @@ angular.module('app')
   .config([ '$stateProvider',
     function($stateProvider) {
       $stateProvider
-        .state('PLURAL_NAME_LOWERCASE_DASHED', {
+        .state('kaleRecords', {
           abstract: true,
           templateUrl: '/assets/views/layouts/application.html'
         })
-        .state('PLURAL_NAME_LOWERCASE_DASHED.index', {
-          url: '/PLURAL_NAME_LOWERCASE_DASHED',
-          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/index.html',
-          controller: 'PLURAL_NAME_CAPITALIZEDIndexController',
+        .state('kaleRecords.index', {
+          url: '/kale-records',
+          templateUrl: '/assets/views/kaleRecords/index.html',
+          controller: 'KaleRecordsIndexController',
           resolve: {
-            PLURAL_NAME_LOWERCASE: ['$q', 'SINGULAR_NAME_CAPITALIZED', function($q, SINGULAR_NAME_CAPITALIZED) {
+            kaleRecords: ['$q', 'KaleRecord', function($q, KaleRecord) {
               var deferred = $q.defer();
 
-              SINGULAR_NAME_CAPITALIZED.get(function(body) {
-                deferred.resolve(body.PLURAL_NAME_LOWERCASE);
+              KaleRecord.get(function(body) {
+                deferred.resolve(body.kaleRecords);
               }, function() {
                 deferred.resolve([]);
               });
@@ -26,25 +26,25 @@ angular.module('app')
             }]
           }
         })
-        .state('PLURAL_NAME_LOWERCASE_DASHED.new', {
-          url: '/PLURAL_NAME_LOWERCASE_DASHED/new',
-          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/new.html',
-          controller: 'PLURAL_NAME_CAPITALIZEDNewController'
+        .state('kaleRecords.new', {
+          url: '/kale-records/new',
+          templateUrl: '/assets/views/kaleRecords/new.html',
+          controller: 'KaleRecordsNewController'
         })
-        .state('PLURAL_NAME_LOWERCASE_DASHED.show', {
-          url: '/PLURAL_NAME_LOWERCASE_DASHED/:id',
-          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/show.html',
-          controller: 'PLURAL_NAME_CAPITALIZEDShowController',
+        .state('kaleRecords.show', {
+          url: '/kale-records/:id',
+          templateUrl: '/assets/views/kaleRecords/show.html',
+          controller: 'KaleRecordsShowController',
           resolve: {
-            SINGULAR_NAME_LOWERCASE: ['$q', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
-              function($q, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
+            kaleRecord: ['$q', '$state', '$stateParams', 'KaleRecord',
+              function($q, $state, $stateParams, KaleRecord) {
                 var deferred = $q.defer();
 
-                SINGULAR_NAME_CAPITALIZED.get({ id: $stateParams.id }, function(body) {
-                  deferred.resolve(body.SINGULAR_NAME_LOWERCASE);
+                KaleRecord.get({ id: $stateParams.id }, function(body) {
+                  deferred.resolve(body.kaleRecord);
                 }, function() {
                   deferred.reject();
-                  $state.go('PLURAL_NAME_LOWERCASE');
+                  $state.go('kaleRecords');
                 });
 
                 return deferred.promise;
@@ -52,20 +52,20 @@ angular.module('app')
             ]
           }
         })
-        .state('PLURAL_NAME_LOWERCASE_DASHED.edit', {
-          url: '/PLURAL_NAME_LOWERCASE_DASHED/:id/edit',
-          templateUrl: '/assets/views/PLURAL_NAME_LOWERCASE_DASHED/edit.html',
-          controller: 'PLURAL_NAME_CAPITALIZEDEditController',
+        .state('kaleRecords.edit', {
+          url: '/kale-records/:id/edit',
+          templateUrl: '/assets/views/kaleRecords/edit.html',
+          controller: 'KaleRecordsEditController',
           resolve: {
-            SINGULAR_NAME_LOWERCASE: ['$q', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
-              function($q, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
+            kaleRecord: ['$q', '$state', '$stateParams', 'KaleRecord',
+              function($q, $state, $stateParams, KaleRecord) {
                 var deferred = $q.defer();
 
-                SINGULAR_NAME_CAPITALIZED.get({ id: $stateParams.id }, function(body) {
-                  deferred.resolve(body.SINGULAR_NAME_LOWERCASE);
+                KaleRecord.get({ id: $stateParams.id }, function(body) {
+                  deferred.resolve(body.kaleRecord);
                 }, function() {
                   deferred.reject();
-                  $state.go('PLURAL_NAME_LOWERCASE');
+                  $state.go('kaleRecords');
                 });
 
                 return deferred.promise;

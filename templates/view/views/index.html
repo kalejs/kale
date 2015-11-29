@@ -1,14 +1,14 @@
-<h1>PLURAL_NAME_CAPITALIZED</h1>
+<h1>KaleRecords</h1>
 
 <table class="table">
-  <tr ng-repeat="SINGULAR_NAME_LOWERCASE in PLURAL_NAME_LOWERCASE">
-    <td>{{ SINGULAR_NAME_LOWERCASE.id }}</td>
+  <tr ng-repeat="kaleRecord in kaleRecords">
+    <td>{{ kaleRecord.id }}</td>
     <td>
-      <a ui-sref="PLURAL_NAME_LOWERCASE_DASHED.show({ id: SINGULAR_NAME_LOWERCASE.id })">View</a>
-      <a ui-sref="PLURAL_NAME_LOWERCASE_DASHED.edit({ id: SINGULAR_NAME_LOWERCASE.id })">Edit</a>
-      <a ng-click="destroy(SINGULAR_NAME_LOWERCASE)">Delete</a>
+      <a ui-sref="kaleRecords.show({ id: kaleRecord.id })">View</a>
+      <a ui-sref="kaleRecords.edit({ id: kaleRecord.id })">Edit</a>
+      <a ng-click="destroy(kaleRecord)">Delete</a>
     </td>
   </tr>
 </table>
 
-<a ui-sref="PLURAL_NAME_LOWERCASE_DASHED.new">New SINGULAR_NAME_CAPITALIZED</a>
+<a ui-sref="kaleRecords.new">New KaleRecord</a>

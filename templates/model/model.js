@@ -2,9 +2,9 @@
 
 const bookshelf = require('../../db');
 
-const KaleClass = bookshelf.Model.extend({
+const KaleRecord = bookshelf.Model.extend({
   tableName: 'kale_records',
   hasTimestamps: true
 });
 
-module.exports = bookshelf.model('KaleClass', KaleClass);
+module.exports = bookshelf.model('KaleRecord', KaleRecord);

@@ -3,7 +3,7 @@
 const _ = require('lodash');
 
 const index = (ctx) => {
-  return ctx.models.KaleClass.collection()
+  return ctx.models.KaleRecord.collection()
     .query(function(knex) {
       knex.limit(50).offset(0).orderBy('created_at', 'asc');
     })
@@ -16,7 +16,7 @@ const index = (ctx) => {
 };
 
 const show = (ctx) => {
-  return _fetchKaleClass(ctx).then((kaleRecord) => {
+  return _fetchKaleRecord(ctx).then((kaleRecord) => {
     ctx.body = {
       kaleRecord
     };
@@ -25,7 +25,7 @@ const show = (ctx) => {
 
 const create = (ctx) => {
   let params = _kaleRecordParams(ctx.request.body);
-  let kaleRecord = new ctx.models.KaleClass(params);
+  let kaleRecord = new ctx.models.KaleRecord(params);
 
   return kaleRecord.save().then((kaleRecord) => {
     ctx.status = 201;
@@ -36,7 +36,7 @@ const create = (ctx) => {
 };
 
 const update = (ctx) => {
-  return _fetchKaleClass(ctx).then((kaleRecord) => {
+  return _fetchKaleRecord(ctx).then((kaleRecord) => {
     let params = _kaleRecordParams(ctx.request.body);
 
     return kaleRecord.save(params, { patch: true });
@@ -49,19 +49,19 @@ const update = (ctx) => {
 };
 
 const destroy = (ctx) => {
-  return _fetchKaleClass(ctx).then((kaleRecord) => {
+  return _fetchKaleRecord(ctx).then((kaleRecord) => {
     return kaleRecord.destroy();
   }).then(() => {
     ctx.status = 204;
   });
 };
 
-function _fetchKaleClass(ctx) {
-  return ctx.models.KaleClass.forge({ id: ctx.params.id }).fetch({ require: true });
+function _fetchKaleRecord(ctx) {
+  return ctx.models.KaleRecord.forge({ id: ctx.params.id }).fetch({ require: true });
 }
 
 function _kaleRecordParams(body) {
-  // TODO: Whitelist params for creating & updating a KaleClass.
+  // TODO: Whitelist params for creating & updating a KaleRecord.
   return _.pick(body, '');
 }
 

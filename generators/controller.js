@@ -19,7 +19,7 @@ function _controllerTemplate(className, singular, plural) {
   let template = _template('controller.js');
 
   return template
-    .replace(/KaleClass/g, className)
+    .replace(/KaleRecord/g, className)
     .replace(/kaleRecords/g, plural)
     .replace(/kaleRecord/g, singular);
 }

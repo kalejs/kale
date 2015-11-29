@@ -32,7 +32,7 @@ function _migrationTemplate(tableName) {
 
 function _modelTemplate(className, tableName) {
   return _template('model.js')
-    .replace(/KaleClass/g, className)
+    .replace(/KaleRecord/g, className)
     .replace(/kale_records/g, tableName);
 }
 

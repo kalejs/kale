@@ -1,6 +1,6 @@
 'use strict';
 
-require('./PLURAL_NAME_LOWERCASE_CAMELIZED/edit');
-require('./PLURAL_NAME_LOWERCASE_CAMELIZED/index');
-require('./PLURAL_NAME_LOWERCASE_CAMELIZED/new');
-require('./PLURAL_NAME_LOWERCASE_CAMELIZED/show');
+require('./kaleRecords/edit');
+require('./kaleRecords/index');
+require('./kaleRecords/new');
+require('./kaleRecords/show');

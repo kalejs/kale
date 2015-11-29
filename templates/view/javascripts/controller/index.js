@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('app.controllers')
-  .controller('PLURAL_NAME_CAPITALIZEDIndexController', ['$scope', '$state', 'SINGULAR_NAME_CAPITALIZED', 'PLURAL_NAME_LOWERCASE',
-    function($scope, $state, SINGULAR_NAME_CAPITALIZED, PLURAL_NAME_LOWERCASE) {
-      $scope.PLURAL_NAME_LOWERCASE = PLURAL_NAME_LOWERCASE;
+  .controller('KaleRecordsIndexController', ['$scope', '$state', 'KaleRecord', 'kaleRecords',
+    function($scope, $state, KaleRecord, kaleRecords) {
+      $scope.kaleRecords = kaleRecords;
 
-      $scope.destroy = function(SINGULAR_NAME_LOWERCASE) {
-        SINGULAR_NAME_CAPITALIZED.delete({ id: SINGULAR_NAME_LOWERCASE.id }, function() {
+      $scope.destroy = function(kaleRecord) {
+        KaleRecord.delete({ id: kaleRecord.id }, function() {
           $state.go($state.current, {}, { reload: true });
         });
       };

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('app.controllers')
-  .controller('PLURAL_NAME_CAPITALIZEDNewController', ['$scope', '$state', '$stateParams', 'SINGULAR_NAME_CAPITALIZED',
-    function($scope, $state, $stateParams, SINGULAR_NAME_CAPITALIZED) {
-      $scope.SINGULAR_NAME_LOWERCASE = new SINGULAR_NAME_CAPITALIZED();
+  .controller('KaleRecordsNewController', ['$scope', '$state', '$stateParams', 'KaleRecord',
+    function($scope, $state, $stateParams, KaleRecord) {
+      $scope.kaleRecord = new KaleRecord();
 
       $scope.create = function() {
-        $scope.SINGULAR_NAME_LOWERCASE.$save(function() {
-          $state.go('PLURAL_NAME_LOWERCASE.index');
+        $scope.kaleRecord.$save(function() {
+          $state.go('kaleRecords.index');
         });
       };
     }
