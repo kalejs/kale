@@ -23,7 +23,7 @@ var js = browserify('app/assets/javascripts', {
 });
 
 if (env !== 'development') {
-  js = uglifyJs(js, { compress: true });
+  js = uglifyJs(js, { compress: true, mangle: true });
 }
 
 js = funnel(js, {
