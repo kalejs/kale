@@ -120,11 +120,16 @@ function _routerTemplate(camelized) {
   var dasherized = _.str.dasherize(camelized);
 
   return `
-router.get('/${dasherized}', controllers.${camelized}.index);
-router.get('/${dasherized}/:id', controllers.${camelized}.show);
-router.post('/${dasherized}', controllers.${camelized}.create);
-router.put('/${dasherized}/:id', controllers.${camelized}.update);
-router.del('/${dasherized}/:id', controllers.${camelized}.destroy);
+  route.all('/${dasherized}', {
+    get: controllers.${camelized}.index,
+    post: controllers.${camelized}.create
+  });
+
+  route.all('/${dasherized}/:id', {
+    get: controllers.${camelized}.show,
+    put: controllers.${camelized}.update,
+    delete: controllers.${camelized}.destroy
+  });
 `;
 }
 
@@ -134,12 +139,7 @@ function _writeRoutes(camelized) {
 
   var routes = fs.readFileSync(routesPath, 'utf8');
   var lines = routes.split('\n');
-
-  var exportLine = _.findLastIndex(lines, function(text) {
-    _.str.startsWith(text, 'route.all(\'*\'');
-  });
-
-  lines.splice(exportLine - 1, 0, template);
+  lines.splice(-1, 0, template);
 
   fs.writeFileSync(routesPath, lines.join('\n'));
 }

@@ -66,12 +66,12 @@ app/
   models/             <-- Bookshelf models
 
   index.js            <-- app entry point
+  routes.js           <-- API routes
 
 bin/                  <-- binary files
 
 config/               <-- app config
   environments/       <-- environment specific config
-  routes.js           <-- API routes
 
 db/                   <-- database config, initialization
   migrations/         <-- database migrations
