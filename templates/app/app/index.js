@@ -28,6 +28,11 @@ app.use(middleware.errors);
 
 app.use(router);
 
+app.use((ctx, next) => {
+  if (!ctx.path.startsWith('/api/')) {
+    return next();
+  }
+});
 app.use(convert(serve(path.join(__dirname, '..', 'public'))));
 app.use((ctx) => {
   return send(ctx, 'layout.html', {
