@@ -16,7 +16,7 @@ const serve = require('koa-static');
 
 const app = new Koa();
 
-app.use(convert(logger(config.logging.format)));
+app.use(logger(config.logging.format));
 app.use(helmet());
 app.use(convert(cors()));
 app.use(body());
