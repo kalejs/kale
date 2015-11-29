@@ -3,144 +3,61 @@
 var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
+var templatePath = path.join(__dirname, '..', 'templates', 'controller');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
 
+function _template(name) {
+  return fs.readFileSync(path.join(templatePath, name), 'utf8');
+}
+
 function _emptyControllerTemplate() {
-  return `'use strict';
-
-module.exports = {
-
-};
-`;
+  return _template('empty.js');
 }
 
 function _controllerTemplate(className, singular, plural) {
-  return `'use strict';
+  let template = _template('controller.js');
 
-const _ = require('lodash');
-
-const index = (ctx) => {
-  return ctx.models.${className}.collection()
-    .query(function(knex) {
-      knex.limit(50).offset(0).orderBy('created_at', 'asc');
-    })
-    .fetch()
-    .then((${plural}) => {
-      ctx.body = {
-        ${plural}
-      };
-    });
-};
-
-const show = (ctx) => {
-  return _fetch${className}(ctx).then((${singular}) => {
-    ctx.body = {
-      ${singular}
-    };
-  });
-};
-
-const create = (ctx) => {
-  let params = _${singular}Params(ctx.request.body);
-  let ${singular} = new ctx.models.${className}(params);
-
-  return ${singular}.save().then((${singular}) => {
-    ctx.status = 201;
-    ctx.body = {
-      ${singular}
-    };
-  });
-};
-
-const update = (ctx) => {
-  return _fetch${className}(ctx).then((${singular}) => {
-    let params = _${singular}Params(ctx.request.body);
-
-    return ${singular}.save(params, { patch: true })
-  }).then((${singular}) => {
-    ctx.status = 200;
-    ctx.body = {
-      ${singular}
-    };
-  });
-};
-
-const destroy = (ctx) => {
-  return _fetch${className}(ctx).then((${singular}) => {
-    return ${singular}.destroy();
-  }).then(() => {
-    ctx.status = 204;
-  });
-};
-
-function _fetch${className}(ctx) {
-  return ctx.models.${className}.forge({ id: ctx.params.id }).fetch({ require: true });
-}
-
-function _${singular}Params(body) {
-  // TODO: Whitelist params for creating & updating a ${className}.
-  return _.pick(body, '');
-}
-
-module.exports = {
-  index,
-  show,
-  create,
-  update,
-  destroy
-};
-`;
+  return template
+    .replace(/KaleClass/g, className)
+    .replace(/kaleRecords/g, plural)
+    .replace(/kaleRecord/g, singular);
 }
 
 function _indexTemplate(dir) {
-  var files = fs.readdirSync(dir);
-  var requires = [];
-  var template = `'use strict';
-
-module.exports = {
-[FILES]
-};
-`;
+  let template = _template('index.js');
+  let files = fs.readdirSync(dir);
+  let requires = [];
 
   _.each(files, function(file) {
     if (_.str.isBlank(file) || file === 'index.js' || _.str.startsWith(file, '.')) {
       return;
     }
 
-    var name = file.split('.')[0];
-    var camelizedName = _.str.camelize(name);
+    let name = file.split('.')[0];
+    let camelizedName = _.str.camelize(name);
     requires.push(`  ${camelizedName}: require('./${name}'),`);
   });
 
-  return template.replace('[FILES]', requires.join('\n'));
+  return template.replace('// FILES', requires.join('\n'));
 }
 
 function _routerTemplate(camelized) {
-  var dasherized = _.str.dasherize(camelized);
+  let dasherized = _.str.dasherize(camelized);
 
-  return `
-  route.all('/${dasherized}', {
-    get: controllers.${camelized}.index,
-    post: controllers.${camelized}.create
-  });
-
-  route.all('/${dasherized}/:id', {
-    get: controllers.${camelized}.show,
-    put: controllers.${camelized}.update,
-    delete: controllers.${camelized}.destroy
-  });
-`;
+  return _template('routes.js')
+    .replace(/kale-records/g, dasherized)
+    .replace(/kaleRecords/g, camelized);
 }
 
 function _writeRoutes(camelized) {
-  var routesPath = path.join('.', 'app', 'routes.js');
-  var template = _routerTemplate(camelized);
+  let routesPath = path.join('.', 'app', 'routes.js');
+  let template = _routerTemplate(camelized);
 
-  var routes = fs.readFileSync(routesPath, 'utf8');
-  var lines = routes.split('\n');
+  let routes = fs.readFileSync(routesPath, 'utf8');
+  let lines = routes.split('\n');
 
-  var exportLine = _.findLastIndex(lines, function(text) {
+  let exportLine = _.findLastIndex(lines, function(text) {
     _.str.startsWith(text, '});');
   });
 
@@ -151,16 +68,16 @@ function _writeRoutes(camelized) {
 
 
 module.exports = function(plural, options) {
-  var camelized = _.str.camelize(plural);
-  var singular = _.str.inflection.singularize(camelized);
-  var className = _.str.classify(singular);
+  let camelized = _.str.camelize(plural);
+  let singular = _.str.inflection.singularize(camelized);
+  let className = _.str.classify(singular);
 
-  var controllersDir = path.join('.', 'app', 'controllers');
+  let controllersDir = path.join('.', 'app', 'controllers');
 
-  var filePath = path.join(controllersDir, camelized + '.js');
-  var indexPath = path.join(controllersDir, 'index.js');
+  let filePath = path.join(controllersDir, camelized + '.js');
+  let indexPath = path.join(controllersDir, 'index.js');
 
-  var template;
+  let template;
 
   if (options.empty) {
     template = _emptyControllerTemplate();
