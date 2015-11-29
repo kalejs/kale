@@ -3,8 +3,13 @@
 var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
+var templatePath = path.join(__dirname, '..', 'templates', 'model');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
+
+function _template(name) {
+  return fs.readFileSync(path.join(templatePath, name), 'utf8');
+}
 
 function _generateMigration(tableName) {
   var name = `create_${tableName}`;
@@ -22,58 +27,32 @@ function _generateMigration(tableName) {
 }
 
 function _migrationTemplate(tableName) {
-  return `'use strict';
-
-exports.up = function(knex) {
-  return knex.schema.createTable('${tableName}', function(t) {
-    t.uuid('id').primary().defaultsTo(knex.raw('gen_random_uuid()'));
-
-    t.timestamps();
-  });
-};
-
-exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('${tableName}');
-};
-`;
+  return _template('migration.js').replace(/kale_records/g, tableName);
 }
 
 function _modelTemplate(className, tableName) {
-  return `'use strict';
-
-const bookshelf = require('../../db');
-
-const ${className} = bookshelf.Model.extend({
-  tableName: '${tableName}',
-  hasTimestamps: true
-});
-
-module.exports = bookshelf.model('${className}', ${className});
-`;
+  return _template('model.js')
+    .replace(/KaleClass/g, className)
+    .replace(/kale_records/g, tableName);
 }
 
 function _indexTemplate(dir) {
-  var template = `'use strict';
+  let template = _template('index.js');
 
-module.exports = {
-[FILES]
-};
-`;
-
-  var files = fs.readdirSync(dir);
-  var requires = [];
+  let files = fs.readdirSync(dir);
+  let requires = [];
 
   _.each(files, function(file) {
     if (_.str.isBlank(file) || file === 'index.js' || _.str.startsWith(file, '.')) {
       return;
     }
 
-    var name = file.split('.')[0];
-    var className = _.str.classify(name);
+    let name = file.split('.')[0];
+    let className = _.str.classify(name);
     requires.push(`  ${className}: require('./${name}'),`);
   });
 
-  return template.replace('[FILES]', requires.join('\n'));
+  return template.replace('// FILES', requires.join('\n'));
 }
 
 module.exports = function(name) {
