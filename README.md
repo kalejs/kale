@@ -143,5 +143,6 @@ kale new blog
 cd blog
 ./bin/setup
 kale generate scaffold Posts
+kale migrate
 npm start
 ```
