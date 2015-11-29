@@ -6,7 +6,7 @@ angular.module('app')
       $stateProvider
         .state('PLURAL_NAME_LOWERCASE_DASHED', {
           abstract: true,
-          template: '<ui-view />'
+          templateUrl: '/assets/views/layouts/application.html'
         })
         .state('PLURAL_NAME_LOWERCASE_DASHED.index', {
           url: '/PLURAL_NAME_LOWERCASE_DASHED',

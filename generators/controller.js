@@ -139,7 +139,12 @@ function _writeRoutes(camelized) {
 
   var routes = fs.readFileSync(routesPath, 'utf8');
   var lines = routes.split('\n');
-  lines.splice(-1, 0, template);
+
+  var exportLine = _.findLastIndex(lines, function(text) {
+    _.str.startsWith(text, '});');
+  });
+
+  lines.splice(exportLine - 1, 0, template);
 
   fs.writeFileSync(routesPath, lines.join('\n'));
 }
