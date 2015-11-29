@@ -17,6 +17,6 @@
   <div ui-view></div>
 </div>
 
-<footer>
-  &copy; <script>document.write(new Date().getFullYear())</script> KALE_APP_NAME.
+<footer ng-controller="FooterController">
+  &copy; <span>{{ year }}</span> KALE_APP_NAME
 </footer>

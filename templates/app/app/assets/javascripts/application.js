@@ -29,6 +29,6 @@ angular.module('app')
     });
   }])
   .run(['$state', function($state) {
-    $state.go('home');
+    $state.go('home.show');
   }]);
 
