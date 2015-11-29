@@ -1,10 +1,10 @@
 'use strict';
 
 var assetRev = require('broccoli-asset-rev');
+var BroccoliSass = require('broccoli-sass');
 var browserify = require('broccoli-fast-browserify');
 var env = process.env.BROCCOLI_ENV || 'development';
 var funnel = require('broccoli-funnel');
-var less = require('broccoli-less-single');
 var mergeTrees = require('broccoli-merge-trees');
 var uglifyJs = require('broccoli-uglify-js');
 
@@ -33,9 +33,8 @@ js = funnel(js, {
 /*
  * css (less)
  */
-var css = less('app/assets/stylesheets', 'application.css.less', 'application.css', {
-  paths: ['./app/assets/stylesheets', './app/assets/bower_components'],
-  compress: env !== 'development'
+var css = new BroccoliSass(['app/assets/stylesheets', 'app/assets/bower_components'], 'application.css.scss', 'application.css', {
+  outputStyle: env === 'development' ? 'nested' : 'compressed'
 });
 
 css = funnel(css, {
