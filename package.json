@@ -1,6 +1,6 @@
 {
   "name": "kalejs",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "The node.js framework for developers who deliver.",
   "main": "index.js",
   "scripts": {
@@ -22,10 +22,22 @@
   },
   "dependencies": {
     "async": "^1.5.0",
+    "bookshelf": "venables/bookshelf#allow-swapping-knex",
     "commander": "^2.9.0",
     "fs-extra": "^0.26.2",
     "inflection": "^1.8.0",
-    "lodash": "^3.10.1",
+    "kcors": "^2.1.1",
+    "knex": "^0.11.7",
+    "koa": "^2.0.0",
+    "koa-helmet": "^2.0.0",
+    "koa-json": "^2.0.1",
+    "koa-json-body": "^5.0.0",
+    "koa-morgan": "^1.0.0",
+    "koa-router": "^7.0.1",
+    "koa-static": "^3.0.0",
+    "lodash": "^4.13.1",
+    "node-uuid": "^1.4.7",
+    "pluralize": "^3.0.0",
     "underscore.string": "^3.2.2"
   }
 }
