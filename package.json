@@ -1,6 +1,6 @@
 {
   "name": "kalejs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "The node.js framework for developers who deliver.",
   "main": "index.js",
   "scripts": {
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/venables/kalejs.git"
+    "url": "git+https://github.com/kalejs/kale.git"
   },
   "author": "Matt Venables <mattvenables@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/venables/kalejs/issues"
+    "url": "https://github.com/kalejs/kale/issues"
   },
-  "homepage": "https://github.com/venables/kalejs#readme",
+  "homepage": "https://github.com/kalejs/kale#readme",
   "preferGlobal": true,
   "bin": {
     "kale": "index.js"
