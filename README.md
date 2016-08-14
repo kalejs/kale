@@ -1,21 +1,12 @@
-# kale.js
+# Kale.js
 
-The node.js framework for developers who deliver on time.
+The blazing fast node.js framework for developers who deliver on time.
 
 ## What is it?
 
-Kale.js is a set of lightweight, opinionated generators for building highly-scalable [koa](http://koajs.com/)-based node.js APIs with ease and speed.
+Kale.js consists of a lightweight, opinionated [framework](#framework) and several [generators](#generators) for building highly-scalable APIs and web apps with ease.
 
-Kale.js consists of 6 Generators:
-
-* one to [build an app](#usage),
-* one to [build a controller](#controller-generator),
-* one to [build a model](#model-generator),
-* one to [build a set of views](#view-generator),
-* one to [build a migration](#migration-generator), and
-* one to [build scaffolding](#scaffold-generator).
-
-Overall, Kale.js builds apps that are fast, easy-to-read, and follow industry best practices.
+Overall, Kale.js builds apps that are fast, easy-to-read, require minimal setup, use sane defaults, and follow industry best practices.
 
 A Kale.js application:
 
@@ -39,6 +30,21 @@ A Kale.js application:
 ```
 npm install -g kalejs
 ```
+
+## Framework
+
+
+## Generators
+
+Kale.js includes 6 Generators:
+
+* one to [build an app](#usage),
+* one to [build a controller](#controller-generator),
+* one to [build a model](#model-generator),
+* one to [build a set of views](#view-generator),
+* one to [build a migration](#migration-generator), and
+* one to [build scaffolding](#scaffold-generator).
+
 
 ## Usage
 
@@ -86,7 +92,7 @@ test/                 <-- tests
 
 ## Generators
 
-kale.js comes equipped with a several generators to speed up development:
+Kale.js comes equipped with a several generators to speed up development:
 
 ### Model Generator
 
