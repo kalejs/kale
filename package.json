@@ -18,7 +18,7 @@
   "homepage": "https://github.com/kalejs/kale#readme",
   "preferGlobal": true,
   "bin": {
-    "kale": "index.js"
+    "kale": "./bin/kale.js"
   },
   "dependencies": {
     "async": "^1.5.0",
