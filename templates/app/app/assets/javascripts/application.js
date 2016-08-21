@@ -1,9 +1,5 @@
 'use strict';
 
-require('../bower_components/angular/angular');
-require('../bower_components/angular-resource/angular-resource');
-require('../bower_components/angular-ui-router/release/angular-ui-router');
-
 angular.module('app', [
   'ui.router',
   'ngResource',

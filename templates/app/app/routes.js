@@ -1,8 +1,14 @@
 'use strict';
 
-var controllers = require('./controllers');
-var router = require('koa-simple-router');
+const controllers = require('./controllers');
+const Kale = require('kalejs');
 
-module.exports = router({ prefix: '/api/v1' }, (route) => {
-  route.get('/ping', controllers.ping.ping);
+let router = new Kale.Router({ prefix: '/api/v1' });
+
+router.get('/ping', controllers.Ping.action('ping'));
+
+router.use((ctx) => {
+  ctx.status = 404;
 });
+
+module.exports = router;

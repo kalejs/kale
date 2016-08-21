@@ -1,0 +1,11 @@
+/**
+ * Vendor CSS
+ *
+ * Include all vendor-specific SCSS, CSS in this file. It is
+ * kept separate from application-specific styles because
+ * these should change less frequently and should be able to
+ * be cached by the client browser for longer.
+ */
+@import "../../../node_modules/bulma/bulma.sass";
+@import "../../../node_modules/font-awesome/scss/font-awesome.scss";
+

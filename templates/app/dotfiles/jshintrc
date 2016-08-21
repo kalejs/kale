@@ -1,7 +1,6 @@
 {
   "bitwise": true,
   "eqeqeq": true,
-  "esnext": true,
   "globals": {
     "after"      : false,
     "afterEach"  : false,

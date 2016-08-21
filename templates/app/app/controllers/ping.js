@@ -1,10 +1,14 @@
 'use strict';
 
-var ping = (ctx) => {
-  ctx.status = 200;
-  ctx.body = 'pong';
-};
+const Kale = require('kalejs');
 
-module.exports = {
-  ping
-};
+class PingController extends Kale.Controller {
+
+  ping() {
+    this.ctx.status = 200;
+    this.ctx.body = 'pong';
+  }
+
+}
+
+module.exports = PingController;

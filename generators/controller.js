@@ -35,8 +35,8 @@ function _indexTemplate(dir) {
     }
 
     let name = file.split('.')[0];
-    let camelizedName = _.str.camelize(name);
-    requires.push(`  ${camelizedName}: require('./${name}'),`);
+    let classifiedName = _.str.classify(name);
+    requires.push(`  ${classifiedName}: require('./${name}'),`);
   });
 
   return template.replace('// FILES', requires.join('\n'));
@@ -44,9 +44,11 @@ function _indexTemplate(dir) {
 
 function _routerTemplate(camelized) {
   let dasherized = _.str.dasherize(camelized);
+  let classified = _.str.classify(dasherized);
 
   return _template('routes.js')
     .replace(/kale-records/g, dasherized)
+    .replace(/KaleRecords/g, classified)
     .replace(/kaleRecords/g, camelized);
 }
 
@@ -57,11 +59,15 @@ function _writeRoutes(camelized) {
   let routes = fs.readFileSync(routesPath, 'utf8');
   let lines = routes.split('\n');
 
-  let exportLine = _.findLastIndex(lines, function(text) {
-    _.str.startsWith(text, '});');
+  let routerDefinition = _.findLastIndex(lines, function(text) {
+    return _.str.startsWith(text, 'let router');
   });
 
-  lines.splice(exportLine - 1, 0, template);
+  let endOfRouterDefinition = _.findIndex(lines, function(text) {
+    return _.str.isBlank(text);
+  }, routerDefinition);
+
+  lines.splice(endOfRouterDefinition, 0, template);
 
   fs.writeFileSync(routesPath, lines.join('\n'));
 }

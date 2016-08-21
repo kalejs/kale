@@ -3,7 +3,7 @@
 'use strict';
 
 var execSync = require('child_process').execSync;
-var generators = require('./generators');
+var generators = require('../generators');
 var path = require('path');
 var program = require('commander');
 var s = require('underscore.string');

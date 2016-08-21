@@ -1,74 +1,77 @@
 'use strict';
 
+const Kale = require('kalejs');
 const _ = require('lodash');
 
-const index = (ctx) => {
-  return ctx.models.KaleRecord.collection()
-    .query(function(knex) {
-      knex.limit(50).offset(0).orderBy('created_at', 'asc');
-    })
-    .fetch()
-    .then((kaleRecords) => {
-      ctx.body = {
-        kaleRecords
+class KaleRecordsController extends Kale.Controller {
+
+  index() {
+    return this.ctx.models.KaleRecord.collection()
+      .query(function(knex) {
+        knex.limit(50).offset(0).orderBy('created_at', 'asc');
+      })
+      .fetch()
+      .then((kaleRecords) => {
+        this.ctx.body = {
+          kaleRecords
+        };
+      });
+  }
+
+  show() {
+    return this._fetchKaleRecord(this.ctx.params.id).then((kaleRecord) => {
+      this.ctx.body = {
+        kaleRecord
       };
     });
-};
+  }
 
-const show = (ctx) => {
-  return _fetchKaleRecord(ctx).then((kaleRecord) => {
-    ctx.body = {
-      kaleRecord
-    };
-  });
-};
+  create() {
+    let params = this._kaleRecordParams();
+    let kaleRecord = new this.ctx.models.KaleRecord(params);
 
-const create = (ctx) => {
-  let params = _kaleRecordParams(ctx.request.body);
-  let kaleRecord = new ctx.models.KaleRecord(params);
+    return kaleRecord.save().then((kaleRecord) => {
+      this.ctx.status = 201;
+      this.ctx.body = {
+        kaleRecord
+      };
+    });
+  }
 
-  return kaleRecord.save().then((kaleRecord) => {
-    ctx.status = 201;
-    ctx.body = {
-      kaleRecord
-    };
-  });
-};
+  update() {
+    return this._fetchKaleRecord(this.ctx.params.id).then((kaleRecord) => {
+      let params = this._kaleRecordParams();
 
-const update = (ctx) => {
-  return _fetchKaleRecord(ctx).then((kaleRecord) => {
-    let params = _kaleRecordParams(ctx.request.body);
+      return kaleRecord.save(params, { patch: true });
+    }).then((kaleRecord) => {
+      this.ctx.status = 200;
+      this.ctx.body = {
+        kaleRecord
+      };
+    });
+  }
 
-    return kaleRecord.save(params, { patch: true });
-  }).then((kaleRecord) => {
-    ctx.status = 200;
-    ctx.body = {
-      kaleRecord
-    };
-  });
-};
+  destroy() {
+    return this._fetchKaleRecord(this.ctx.params.id).then((kaleRecord) => {
+      return kaleRecord.destroy();
+    }).then(() => {
+      this.ctx.status = 204;
+    });
+  }
 
-const destroy = (ctx) => {
-  return _fetchKaleRecord(ctx).then((kaleRecord) => {
-    return kaleRecord.destroy();
-  }).then(() => {
-    ctx.status = 204;
-  });
-};
+  /**
+   * Private
+   */
 
-function _fetchKaleRecord(ctx) {
-  return ctx.models.KaleRecord.forge({ id: ctx.params.id }).fetch({ require: true });
+  _fetchKaleRecord(id) {
+    return this.ctx.models.KaleRecord.forge({ id: id }).fetch({ require: true });
+  }
+
+  _kaleRecordParams() {
+    // TODO: Whitelist params for creating & updating a KaleRecord.
+    return _.pick(this.ctx.request.body, '');
+  }
 }
 
-function _kaleRecordParams(body) {
-  // TODO: Whitelist params for creating & updating a KaleRecord.
-  return _.pick(body, '');
-}
+module.exports = KaleRecordsController;
 
-module.exports = {
-  index,
-  show,
-  create,
-  update,
-  destroy
-};

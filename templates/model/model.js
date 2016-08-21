@@ -1,10 +1,9 @@
 'use strict';
 
-const bookshelf = require('../../db');
+const Kale = require('kalejs');
 
-const KaleRecord = bookshelf.Model.extend({
-  tableName: 'kale_records',
-  hasTimestamps: true
-});
+class KaleRecord extends Kale.Model {
 
-module.exports = bookshelf.model('KaleRecord', KaleRecord);
+}
+
+module.exports = Kale.Model.register('KaleRecord', KaleRecord);
