@@ -2,46 +2,19 @@
 
 'use strict';
 
-const execSync = require('child_process').execSync;
+const config = require('../config');
+const Kale = require('kalejs');
 const path = require('path');
-const program = require('commander');
 
-const create = (name) => {
-  var knex = path.join('..', 'node_modules', '.bin', 'knex');
-  var knexfile = path.join('..', 'db', 'knexfile.js');
-  var result = execSync(`${knex} migrate:make ${name} --knexfile ${knexfile}`, { encoding: 'utf8' });
-  console.log(result);
-};
+let cli = new Kale.CLI.Migrate(config.db, path.join(__dirname, '..'));
 
-const up = () => {
-  var knex = path.join('.', 'node_modules', '.bin', 'knex');
-  var knexfile = path.join('.', 'db', 'knexfile.js');
-  var result = execSync(`NODE_ENV=test ${knex} migrate:latest --knexfile ${knexfile}`, { encoding: 'utf8' });
-  console.log(result);
-};
-
-const down = () => {
-  var knex = path.join('.', 'node_modules', '.bin', 'knex');
-  var knexfile = path.join('.', 'db', 'knexfile.js');
-  var result = execSync(`${knex} migrate:rollback --knexfile ${knexfile}`, { encoding: 'utf8' });
-  console.log(result);
-};
-
-program
-  .command('[action] [name]')
-  .usage('<new|up|down|rollback>')
-  .description('Create, run, or rollback a migration')
-  .action((action, name) => {
-    switch (action) {
-      case 'new', 'g':
-        create(name);
-        break;
-
-      case 'down', 'rollback':
-        down();
-        break;
-
-      default:
-        up();
-    }
+cli
+  .run(process.argv[2], process.argv[3])
+  .then(function() {
+    process.exit(0);
+  })
+  .catch(function(e) {
+    console.log('Error');
+    console.log(e);
+    process.exit(-1);
   });

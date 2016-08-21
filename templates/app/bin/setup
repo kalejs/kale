@@ -4,10 +4,16 @@
 
 DEFAULT_PORT=3000
 
+echo 'Setting up kale_records ...'
+
+#
+# npm installation
+#
+echo ''
+echo 'Running npm install ...'
 # Set up npm dependencies
-npm install -g nodemon gulp bower jshint jscs
+npm install -g nodemon gulp jshint jscs
 npm install
-bower install
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd $DIR/..
@@ -17,8 +23,27 @@ if [ ! -f .env ]; then
   echo "PORT=$DEFAULT_PORT" >> .env
 fi
 
-# Create and migrate the database
+
+#
+# Postgres setup
+# Create the database
+#
+echo ''
+echo 'Creating the Postgres database ...'
 createuser -s kale_records
 createdb kale_records_development -U kale_records
 
-kale migrate
+#
+# Migrations
+# Migrate the database
+#
+echo ''
+echo 'Running migrations ...'
+
+$DIR/migrate
+
+echo ''
+echo 'Done.'
+echo ''
+echo 'You can start your application by running:'
+echo 'npm start'

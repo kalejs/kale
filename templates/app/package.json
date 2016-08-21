@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "bookshelf": "^0.9.1",
+    "kalejs": "^0.1.0",
     "kcors": "^1.0.1",
     "knex": "^0.9.0",
     "koa": "^2.0.0-alpha.3",
