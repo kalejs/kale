@@ -1,6 +1,7 @@
 {
   "bitwise": true,
   "eqeqeq": true,
+  "esversion": 6,
   "globals": {
     "after"      : false,
     "afterEach"  : false,

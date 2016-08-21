@@ -57,7 +57,6 @@ function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
   var files = [
     path.join(appPath, 'package.json'),
     path.join(appPath, 'README.md'),
-    path.join(appPath, 'bower.json'),
   ];
 
   dirs.forEach(function(dir) {

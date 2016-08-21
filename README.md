@@ -13,7 +13,7 @@ A Kale.js application:
 * Built on [koa](http://koajs.com/) and makes heavy use of ES6 Promises.
 * Uses [bookshelf.js](http://bookshelfjs.org/) for an ORM.
 * Backed by [Postgresql](http://www.postgresql.org/) by default.
-* Includes basic single-page-app using [AngularJS](https://angularjs.org/), installed with [bower](http://bower.io/).
+* Includes basic single-page-app using [AngularJS](https://angularjs.org/).
 * Includes an asset pipeline using [Broccoli](http://broccolijs.com/) with development file watching and reload.
 * Front-end javascript uses [browserify](http://browserify.org/) for node-style `require` statements.
 * Sets up [Gulp](https://github.com/gulpjs/gulp) with basic [linting with jshint](https://github.com/jshint/jshint) and [code-style checking with jscs](https://github.com/jscs-dev/node-jscs)
@@ -63,7 +63,6 @@ The app structure will look like:
 ```
 app/
   assets/             <-- front-end app (Angular)
-    bower_components  <-- bower-based installed assets
     images/           <-- static images
     javascripts/      <-- static js files
     stylesheets/      <-- static css (less) files

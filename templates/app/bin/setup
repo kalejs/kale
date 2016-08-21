@@ -12,7 +12,7 @@ echo 'Setting up kale_records ...'
 echo ''
 echo 'Running npm install ...'
 # Set up npm dependencies
-npm install -g nodemon gulp jshint jscs
+npm install -g foreman nodemon gulp jshint jscs
 npm install
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
