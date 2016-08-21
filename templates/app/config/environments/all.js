@@ -5,6 +5,10 @@ var path = require('path');
 module.exports = {
   appName: 'KALE_APP_NAME',
 
+  cors: {
+
+  },
+
   db: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
@@ -28,5 +32,4 @@ module.exports = {
   },
 
   port: process.env.PORT || 3000,
-  root: path.join(__dirname, '..', '..')
 };

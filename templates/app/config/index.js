@@ -1,23 +1,11 @@
 'use strict';
 
-var path = require('path');
+const Kale = require('kalejs');
+const path = require('path');
 
-try {
-  require('dotenv').config({ path: path.join(__dirname, '..', '.env') }).load();
-} catch(e) {}
+let config = new Kale.Config({
+  root: path.join(__dirname, '..'),
+  environmentDir: path.join(__dirname, 'environments')
+});
 
-var _ = require('lodash');
-var env = process.env.NODE_ENV || 'development';
-var configAll = loadConfig('all');
-var configEnv = loadConfig(env);
-var configLocal = loadConfig(env + '.local');
-
-function loadConfig(env) {
-  try {
-    return require('./environments/' + env);
-  } catch(err) {
-    return {};
-  }
-}
-
-module.exports = _.merge({}, configAll, configEnv, configLocal, { env: env });
+module.exports = config.config;
