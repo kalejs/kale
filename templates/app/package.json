@@ -5,8 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "./bin/setup",
     "start": "nf start --procfile Procfile.local",
-    "test": "./node_modules/.bin/gulp"
+    "test": "./node_modules/.bin/gulp test"
   },
   "license": "MIT",
   "engines": {

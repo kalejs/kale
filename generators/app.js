@@ -126,7 +126,7 @@ module.exports = function(appName) {
 
     console.log(`New kale.js app created at ./${appPath}`);
     console.log('');
-    console.log(`Before starting, cd into ${appPath} and run ./bin/setup`);
+    console.log(`Before starting, cd into ${appPath} and run 'npm run setup'`);
     process.exit(0);
   });
 };
