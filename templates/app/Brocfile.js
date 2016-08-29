@@ -4,7 +4,7 @@ const assetRev = require('broccoli-asset-rev');
 const autoprefixer = require('broccoli-autoprefixer');
 const BroccoliSass = require('broccoli-sass');
 const browserify = require('broccoli-fast-browserify');
-const env = process.env.BROCCOLI_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 const funnel = require('broccoli-funnel');
 const mergeTrees = require('broccoli-merge-trees');
 const uglifyJs = require('broccoli-uglify-js');
@@ -60,13 +60,6 @@ css = funnel(css, {
 let fonts = funnel('app/assets/fonts', {
   destDir: 'fonts'
 });
-
-let vendorFonts = funnel('node_modules/font-awesome/fonts', {
-  destDir: 'fonts'
-});
-
-fonts = mergeTrees([fonts, vendorFonts]);
-
 
 /**
  * Images

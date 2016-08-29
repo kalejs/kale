@@ -1,9 +1,19 @@
-<section class="hero is-dark is-bold" data-ng-include="'/assets/views/layouts/_header.html'"></section>
+<header>
+  <nav>
+    <ul>
+      <li>
+        <a class="nav-item is-brand" data-ui-sref="home.show">
+          KALE_APP_NAME
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
 
-<section class="section">
-  <div class="container">
-    <div data-ui-view></div>
-  </div>
+<section>
+  <div data-ui-view></div>
 </section>
 
-<div data-ng-include="'/assets/views/layouts/_footer.html'"></div>
+<footer data-ng-controller="FooterController">
+  <p>&copy; <span>{{ year }}</span> <strong>KALE_APP_NAME</strong>.</p>
+</footer>
