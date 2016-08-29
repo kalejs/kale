@@ -1,1 +1,1 @@
-router.resources('/kale-records', controller.KaleRecords);
+router.resources('/kale-records', controllers.KaleRecords);
