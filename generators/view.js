@@ -50,12 +50,11 @@ function replaceContents(filename, names, callback) {
     },
     function writeFile(next) {
       var replacedContent = contents
-        .replaceAll('KaleRecord', names.singular.capitalized)
-        .replaceAll('kaleRecord', names.singular.lowercase)
         .replaceAll('KaleRecords', names.plural.capitalized)
         .replaceAll('kale-records', names.plural.lowercaseDashed)
         .replaceAll('kaleRecords', names.plural.lowercaseCamelized)
-        .replaceAll('kaleRecords', names.plural.lowercase);
+        .replaceAll('KaleRecord', names.singular.capitalized)
+        .replaceAll('kaleRecord', names.singular.lowercase);
 
       fs.writeFile(filename, replacedContent, next);
     }
