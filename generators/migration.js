@@ -1,12 +1,12 @@
 'use strict';
 
-var execSync = require('child_process').execSync;
-var path = require('path');
+const Migrate = require('../lib/cli/migrate');
+const path = require('path');
+const config = require(path.join(process.cwd(), 'config'));
+const root = process.cwd();
+
+let migrator = new Migrate(config.db, root);
 
 module.exports = function(name) {
-  var knex = path.join('.', 'node_modules', '.bin', 'knex');
-  var knexfile = path.join('.', 'db', 'knexfile.js');
-  var result = execSync(`${knex} migrate:make ${name} --knexfile ${knexfile}`, { encoding: 'utf8' });
-  console.log(result);
+  migrator.run('new', name);
 };
-
