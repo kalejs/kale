@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "async": "^1.5.0",
-    "bookshelf": "venables/bookshelf#allow-swapping-knex",
+    "bookshelf": "tgriesser/bookshelf",
     "commander": "^2.9.0",
     "fs-extra": "^0.26.2",
     "inflection": "^1.8.0",
