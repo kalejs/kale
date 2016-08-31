@@ -25,19 +25,19 @@ function _generateMigration(tableName) {
   var migrationGenerator = require('./migration');
   var migrationDir = path.join(process.cwd(), 'db', 'migrations');
 
-  if (!_exists(path)) {
-    console.log('ERROR: Unable to locat the ./db/migrations directory');
+  if (!_exists(migrationDir)) {
+    console.log(`ERROR: Unable to locate the ${migrationDir} directory`);
     return;
   }
 
-  migrationGenerator(name);
+  migrationGenerator(name).then(() => {
+    var files = fs.readdirSync(migrationDir);
+    var file = _.findLast(files, function(filename) {
+      return _.endsWith(filename, `${name}.js`);
+    });
 
-  var files = fs.readdirSync(migrationDir);
-  var file = _.findLast(files, function(filename) {
-    return _.endsWith(filename, `${name}.js`);
+    fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
   });
-
-  fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
 }
 
 function _migrationTemplate(tableName) {

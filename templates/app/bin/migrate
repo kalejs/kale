@@ -6,7 +6,7 @@ const config = require('../config');
 const Kale = require('kalejs');
 const path = require('path');
 
-let cli = new Kale.CLI.Migrate(config.db, path.join(__dirname, '..'));
+let cli = new Kale.CLI.Migrate(config.db, path.join(__dirname, '..', 'db', 'migrations'));
 
 cli
   .run(process.argv[2], process.argv[3])
