@@ -1,31 +1,41 @@
 'use strict';
 
-var async = require('async');
-var exec = require('child_process').exec;
-var fs = require('fs-extra');
-var path = require('path');
-var s = require('underscore.string');
-var templatePath = path.join(__dirname, '..', 'templates', 'app');
+const exec = require('child_process').exec;
+const fs = require('fs-promise');
+const path = require('path');
+const s = require('underscore.string');
+const templatePath = path.join(__dirname, '..', 'templates', 'app');
 
-function copyAppTemplate(appPath, callback) {
-  fs.copy(templatePath, appPath, callback);
+/**
+ * @returns {Promise}
+ */
+function copyAppTemplate(appPath) {
+  return fs.copy(templatePath, appPath);
 }
 
-function installDotfiles(appPath, callback) {
-  var dotfilesPath = path.join(appPath, 'dotfiles');
-  var files = fs.readdirSync(dotfilesPath);
+/**
+ * @returns {Promise}
+ */
+function installDotfiles(appPath) {
+  let dotfilesPath = path.join(appPath, 'dotfiles');
+  let files = fs.readdirSync(dotfilesPath);
 
-  async.each(files, function(filename, next) {
-    var filePath = path.join(dotfilesPath, filename);
-    var destPath = path.join(appPath, `.${filename}`);
+  let promises = files.map((filename) => {
+    let filePath = path.join(dotfilesPath, filename);
+    let destPath = path.join(appPath, `.${filename}`);
 
-    fs.move(filePath, destPath, { clobber: true }, next);
-  }, callback);
+    return fs.move(filePath, destPath, { clobber: true });
+  });
+
+  return Promise.all(promises);
 }
 
-function deleteDotfilesTemplate(appPath, callback) {
-  var dotfilesPath = path.join(appPath, 'dotfiles');
-  fs.remove(dotfilesPath, callback);
+/**
+ * @returns {Promise}
+ */
+function deleteDotfilesTemplate(appPath) {
+  let dotfilesPath = path.join(appPath, 'dotfiles');
+  return fs.remove(dotfilesPath);
 }
 
 function walkSync(dir, filelist) {
@@ -47,14 +57,17 @@ function walkSync(dir, filelist) {
   return filelist;
 }
 
-function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
-  var dirs = [
+/**
+ * @returns {Promise}
+ */
+function replaceAllPlaceholdersWithAppName(appPath, appName) {
+  let dirs = [
     path.join(appPath, 'app'),
     path.join(appPath, 'bin'),
     path.join(appPath, 'config'),
   ];
 
-  var files = [
+  let files = [
     path.join(appPath, 'package.json'),
     path.join(appPath, 'README.md'),
   ];
@@ -63,70 +76,64 @@ function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
     files = files.concat(walkSync(dir));
   });
 
-  async.each(files, function(filename, next) {
-    replacePlaceholderWithAppName(filename, appName, next);
-  }, callback);
+  let promises = files.map((filename) => {
+    return replacePlaceholderWithAppName(filename, appName);
+  });
+
+  return Promise.all(promises);
 }
 
-function replacePlaceholderWithAppName(filename, appName, callback) {
-  var underscored = s.underscored(appName);
-  var dashed = s.dasherize(underscored);
-  var contents;
+/**
+ * @returns {Promise}
+ */
+function replacePlaceholderWithAppName(filename, appName) {
+  let underscored = s.underscored(appName);
+  let dashed = s.dasherize(underscored);
 
-  async.series([
-    function readFile(next) {
-      fs.readFile(filename, 'utf8', function(err, _contents) {
-        contents = _contents;
-        next(err);
-      });
-    },
-    function writeFile(next) {
-      var replacedContent = contents
+  return fs.readFile(filename, 'utf8')
+    .then((contents) => {
+      let replacedContent = contents
         .replaceAll('kale_records', underscored)
         .replaceAll('KALE_APP_NAME', appName)
         .replaceAll('KALE_DASHERIZED_NAME', dashed);
 
-      fs.writeFile(filename, replacedContent, next);
-    }
-  ], callback);
+      return fs.writeFile(filename, replacedContent);
+    });
 }
 
-function initializeGitRepo(appPath, callback) {
-  exec(`git init ${appPath}`, callback);
+/**
+ * @returns {Promise}
+ */
+function initializeGitRepo(appPath) {
+  return new Promise((resolve, reject) => {
+    exec(`git init ${appPath}`, (err) => {
+      if (err) {
+        return reject();
+      }
+
+      return resolve();
+    });
+  });
 }
 
 String.prototype.replaceAll = function(find, replace) {
   return this.replace(new RegExp(find, 'g'), replace);
 };
 
+/**
+ * @type {Promise}
+ */
 module.exports = function(appName) {
-  var appPath = path.join('.', appName);
+  let appPath = path.join('.', appName);
 
-  async.series([
-    function (next) {
-      copyAppTemplate(appPath, next);
-    },
-    function (next) {
-      installDotfiles(appPath, next);
-    },
-    function (next) {
-      deleteDotfilesTemplate(appPath, next);
-    },
-    function (next) {
-      replaceAllPlaceholdersWithAppName(appPath, appName, next);
-    },
-    function (next) {
-      initializeGitRepo(appPath, next);
-    }
-  ], function(err) {
-    if (err) {
-      console.log(err);
-      process.exit(1);
-    }
-
-    console.log(`New kale.js app created at ./${appPath}`);
-    console.log('');
-    console.log(`Before starting, cd into ${appPath} and run 'npm run setup'`);
-    process.exit(0);
-  });
+  return copyAppTemplate(appPath)
+    .then(installDotfiles(appPath))
+    .then(deleteDotfilesTemplate(appPath))
+    .then(replaceAllPlaceholdersWithAppName(appPath, appName))
+    .then(initializeGitRepo(appPath))
+    .then(() => {
+      console.log(`New kale.js app created at ./${appPath}`);
+      console.log('');
+      console.log(`Before starting, cd into ${appPath} and run 'npm run setup'`);
+    });
 };

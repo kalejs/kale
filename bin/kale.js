@@ -2,16 +2,23 @@
 
 'use strict';
 
-var execSync = require('child_process').execSync;
-var generators = require('../generators');
-var path = require('path');
-var program = require('commander');
-var s = require('underscore.string');
+const execSync = require('child_process').execSync;
+const generators = require('../generators');
+const path = require('path');
+const program = require('commander');
+const s = require('underscore.string');
 
 program
   .command('new <NAME>')
   .description('Generate a new kale app with a default directory structure and configuration')
-  .action(generators.app);
+  .action((name) => {
+    generators.app(name)
+      .then(() => {
+        process.exit(0);
+      }, () => {
+        process.exit(1);
+      });
+  });
 
 program
   .command('generate <GENERATOR> <NAME>')
