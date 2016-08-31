@@ -11,10 +11,24 @@ function _template(name) {
   return fs.readFileSync(path.join(templatePath, name), 'utf8');
 }
 
+function _exists(path) {
+  try {
+    fs.accessSync(path);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
 function _generateMigration(tableName) {
   var name = `create_${tableName}`;
   var migrationGenerator = require('./migration');
-  var migrationDir = path.join('.', 'db', 'migrations');
+  var migrationDir = path.join(process.cwd(), 'db', 'migrations');
+
+  if (!_exists(path)) {
+    console.log('ERROR: Unable to locat the ./db/migrations directory');
+    return;
+  }
 
   migrationGenerator(name);
 
