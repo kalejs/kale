@@ -1,14 +1,17 @@
 'use strict';
 
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
-var templatePath = path.join(__dirname, '..', 'templates', 'model');
+const _ = require('lodash');
+const fs = require('fs-promise');
+const path = require('path');
+const templatePath = path.join(__dirname, '..', 'templates', 'model');
 _.str = require('underscore.string');
 _.str.inflection = require('inflection');
 
+/**
+ * @returns {Promise}
+ */
 function _template(name) {
-  return fs.readFileSync(path.join(templatePath, name), 'utf8');
+  return fs.readFile(path.join(templatePath, name), 'utf8');
 }
 
 function _exists(path) {
@@ -20,34 +23,47 @@ function _exists(path) {
   }
 }
 
+/**
+ * @returns {Promise}
+ */
 function _generateMigration(tableName) {
-  var name = `create_${tableName}`;
-  var migrationGenerator = require('./migration');
-  var migrationDir = path.join(process.cwd(), 'db', 'migrations');
+  let name = `create_${tableName}`;
+  let migrationGenerator = require('./migration');
+  let migrationDir = path.join(process.cwd(), 'db', 'migrations');
 
   if (!_exists(migrationDir)) {
     console.log(`ERROR: Unable to locate the ${migrationDir} directory`);
     return;
   }
 
-  migrationGenerator(name).then(() => {
-    var files = fs.readdirSync(migrationDir);
-    var file = _.findLast(files, function(filename) {
-      return _.endsWith(filename, `${name}.js`);
-    });
+  return migrationGenerator(name)
+    .then(() => {
+      let files = fs.readdirSync(migrationDir);
+      let file = _.findLast(files, function(filename) {
+        return _.endsWith(filename, `${name}.js`);
+      });
 
-    fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
+      return fs.writeFile(path.join(migrationDir, file), _migrationTemplate(tableName));
+    });
+}
+
+/**
+ * @returns {Promise}
+ */
+function _migrationTemplate(tableName) {
+  return _template('migration.js').then((template) => {
+    return template.replace(/kale_records/g, tableName);
   });
 }
 
-function _migrationTemplate(tableName) {
-  return _template('migration.js').replace(/kale_records/g, tableName);
-}
-
+/**
+ * @returns {Promise}
+ */
 function _modelTemplate(className, tableName) {
   return _template('model.js')
-    .replace(/KaleRecord/g, className)
-    .replace(/kale_records/g, tableName);
+    .then((template) => {
+      return template.replace(/KaleRecord/g, className).replace(/kale_records/g, tableName);
+    });
 }
 
 function _indexTemplate(dir) {
