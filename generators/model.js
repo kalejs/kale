@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const fs = require('fs-promise');
+const fs = require('fs-extra-promise');
 const path = require('path');
 const templatePath = path.join(__dirname, '..', 'templates', 'model');
 _.str = require('underscore.string');

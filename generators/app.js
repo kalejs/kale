@@ -1,7 +1,7 @@
 'use strict';
 
 const exec = require('child_process').exec;
-const fs = require('fs-promise');
+const fs = require('fs-extra-promise');
 const path = require('path');
 const s = require('underscore.string');
 const templatePath = path.join(__dirname, '..', 'templates', 'app');
@@ -10,7 +10,7 @@ const templatePath = path.join(__dirname, '..', 'templates', 'app');
  * @returns {Promise}
  */
 function copyAppTemplate(appPath) {
-  return fs.copy(templatePath, appPath);
+  return fs.copyAsync(templatePath, appPath);
 }
 
 /**
@@ -18,16 +18,18 @@ function copyAppTemplate(appPath) {
  */
 function installDotfiles(appPath) {
   let dotfilesPath = path.join(appPath, 'dotfiles');
-  let files = fs.readdirSync(dotfilesPath);
+  return fs.readdirAsync(dotfilesPath).then((files) => {
+    console.log('here!');
 
-  let promises = files.map((filename) => {
-    let filePath = path.join(dotfilesPath, filename);
-    let destPath = path.join(appPath, `.${filename}`);
+    let promises = files.map((filename) => {
+      let filePath = path.join(dotfilesPath, filename);
+      let destPath = path.join(appPath, `.${filename}`);
 
-    return fs.move(filePath, destPath, { clobber: true });
+      return fs.moveAsync(filePath, destPath, { clobber: true });
+    });
+
+    return Promise.all(promises);
   });
-
-  return Promise.all(promises);
 }
 
 /**
@@ -35,26 +37,27 @@ function installDotfiles(appPath) {
  */
 function deleteDotfilesTemplate(appPath) {
   let dotfilesPath = path.join(appPath, 'dotfiles');
-  return fs.remove(dotfilesPath);
+  return fs.removeAsync(dotfilesPath);
 }
 
 function walkSync(dir, filelist) {
-  var files = fs.readdirSync(dir);
-  filelist = filelist || [];
+  return fs.readdirAsync(dir).then((files) => {
+    filelist = filelist || [];
 
-  files.forEach(function(file) {
-    var filename = path.join(dir, file);
+    files.forEach(function(file) {
+      var filename = path.join(dir, file);
 
-    if (fs.statSync(filename).isDirectory()) {
-      filelist = walkSync(filename, filelist);
-    } else {
-      if (!s.startsWith(file, '.')) {
-        filelist.push(filename);
+      if (fs.isDirectorySync(filename)) {
+        filelist = walkSync(filename, filelist);
+      } else {
+        if (!s.startsWith(file, '.')) {
+          filelist.push(filename);
+        }
       }
-    }
-  });
+    });
 
-  return filelist;
+    return filelist;
+  });
 }
 
 /**
@@ -90,14 +93,14 @@ function replacePlaceholderWithAppName(filename, appName) {
   let underscored = s.underscored(appName);
   let dashed = s.dasherize(underscored);
 
-  return fs.readFile(filename, 'utf8')
+  return fs.readFileAsync(filename, 'utf8')
     .then((contents) => {
       let replacedContent = contents
         .replaceAll('kale_records', underscored)
         .replaceAll('KALE_APP_NAME', appName)
         .replaceAll('KALE_DASHERIZED_NAME', dashed);
 
-      return fs.writeFile(filename, replacedContent);
+      return fs.writeFileAsync(filename, replacedContent);
     });
 }
 
@@ -124,7 +127,7 @@ String.prototype.replaceAll = function(find, replace) {
  * @type {Promise}
  */
 module.exports = function(appName) {
-  let appPath = path.join('.', appName);
+  let appPath = path.join(process.cwd(), '.', appName);
 
   return copyAppTemplate(appPath)
     .then(installDotfiles(appPath))
@@ -135,5 +138,9 @@ module.exports = function(appName) {
       console.log(`New kale.js app created at ./${appPath}`);
       console.log('');
       console.log(`Before starting, cd into ${appPath} and run 'npm run setup'`);
+    })
+    .catch((e) => {
+      console.log('Error creating kale.js app');
+      console.log(e, e.stack);
     });
 };
