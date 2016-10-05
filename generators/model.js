@@ -84,4 +84,5 @@ module.exports = function(name) {
   _generateMigration(tableName);
 
   console.log(`${className} model written to ${filePath}`);
+  process.exit(0);
 };
