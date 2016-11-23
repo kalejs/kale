@@ -1,11 +1,10 @@
 'use strict';
 
-var _ = require('lodash');
-var async = require('async');
-var fs = require('fs-extra');
-var path = require('path');
-_.str = require('underscore.string');
-_.str.inflection = require('inflection');
+const _ = require('lodash');
+const async = require('async');
+const fs = require('fs-extra');
+const InflectableString = require('./support/inflectableString');
+const path = require('path');
 
 function walkSync(dir, filelist) {
   var files = fs.readdirSync(dir);
@@ -26,7 +25,7 @@ function walkSync(dir, filelist) {
   return filelist;
 }
 
-function replaceContentsInDirs(dirs, names, callback) {
+function replaceContentsInDirs(dirs, inflectable, callback) {
   var files = [];
 
   dirs.forEach(function(dir) {
@@ -34,11 +33,11 @@ function replaceContentsInDirs(dirs, names, callback) {
   });
 
   async.each(files, function(filename, next) {
-    replaceContents(filename, names, next);
+    replaceContents(filename, inflectable, next);
   }, callback);
 }
 
-function replaceContents(filename, names, callback) {
+function replaceContents(filename, inflectable, callback) {
   var contents;
 
   async.series([
@@ -50,18 +49,18 @@ function replaceContents(filename, names, callback) {
     },
     function writeFile(next) {
       var replacedContent = contents
-        .replaceAll('KaleRecords', names.plural.capitalized)
-        .replaceAll('kale-records', names.plural.lowercaseDashed)
-        .replaceAll('kaleRecords', names.plural.lowercaseCamelized)
-        .replaceAll('KaleRecord', names.singular.capitalized)
-        .replaceAll('kaleRecord', names.singular.lowercase);
+        .replaceAll('KaleRecords', inflectable.pluralClassName())
+        .replaceAll('kale-records', inflectable.pluralDasherizedName())
+        .replaceAll('kaleRecords', inflectable.pluralCamelCasedName())
+        .replaceAll('KaleRecord', inflectable.className())
+        .replaceAll('kaleRecord', inflectable.camelCasedName());
 
       fs.writeFile(filename, replacedContent, next);
     }
   ], callback);
 }
 
-function installJavascript(names, callback) {
+function installJavascript(inflectable, callback) {
   var templatePath = path.join(__dirname, '..', 'templates', 'view');
   var assetsPath = path.join('.', 'app', 'assets', 'javascripts');
   var controller = path.join(templatePath, 'javascripts', 'controller');
@@ -70,86 +69,71 @@ function installJavascript(names, callback) {
 
   async.series([
     function controllersDir(next) {
-      fs.copy(controller, path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}`), next);
+      fs.copy(controller, path.join(assetsPath, 'controllers', `${inflectable.pluralCamelCasedName()}`), next);
     },
     function controllersReplace(next) {
-      replaceContentsInDirs([path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}`)], names, next);
+      replaceContentsInDirs([path.join(assetsPath, 'controllers', `${inflectable.pluralCamelCasedName()}`)], inflectable, next);
     },
     function controllersIndex(next) {
       var index = path.join(assetsPath, 'controllers', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseCamelized}');\n`, next);
+      fs.appendFile(index, `require('./${inflectable.pluralCamelCasedName()}');\n`, next);
     },
     function controllerFile(next) {
-      fs.copy(`${controller}.js`, path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}.js`), next);
+      fs.copy(`${controller}.js`,path.join(assetsPath, 'controllers', `${inflectable.pluralCamelCasedName()}.js`), next);
     },
     function controllerReplace(next) {
-      replaceContents(path.join(assetsPath, 'controllers', `${names.plural.lowercaseCamelized}.js`), names, next);
+      replaceContents(path.join(assetsPath, 'controllers', `${inflectable.pluralCamelCasedName()}.js`), inflectable, next);
     },
 
     function routesFile(next) {
-      fs.copy(routes, path.join(assetsPath, 'routes', `${names.plural.lowercaseCamelized}.js`), next);
+      fs.copy(routes, path.join(assetsPath, 'routes', `${inflectable.pluralCamelCasedName()}.js`), next);
     },
     function routesReplace(next) {
-      replaceContents(path.join(assetsPath, 'routes', `${names.plural.lowercaseCamelized}.js`), names, next);
+      replaceContents(path.join(assetsPath, 'routes', `${inflectable.pluralCamelCasedName()}.js`), inflectable, next);
     },
     function routesIndex(next) {
       var index = path.join(assetsPath, 'routes', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseCamelized}');\n`, next);
+      fs.appendFile(index, `require('./${inflectable.pluralCamelCasedName()}');\n`, next);
     },
 
     function serviceFile(next) {
-      fs.copy(service, path.join(assetsPath, 'services', `${names.plural.lowercaseCamelized}.js`), next);
+      fs.copy(service, path.join(assetsPath, 'services', `${inflectable.pluralCamelCasedName()}.js`), next);
     },
     function serviceReplace(next) {
-      replaceContents(path.join(assetsPath, 'services', `${names.plural.lowercaseCamelized}.js`), names, next);
+      replaceContents(path.join(assetsPath, 'services', `${inflectable.pluralCamelCasedName()}.js`), inflectable, next);
     },
     function serviceIndex(next) {
       var index = path.join(assetsPath, 'services', 'index.js');
-      fs.appendFile(index, `require('./${names.plural.lowercaseCamelized}');\n`, next);
+      fs.appendFile(index, `require('./${inflectable.pluralCamelCasedName()}');\n`, next);
     }
   ], callback);
 }
 
-function installViews(names, callback) {
+function installViews(inflectable, callback) {
   var templatePath = path.join(__dirname, '..', 'templates', 'view');
   var viewsPath = path.join(templatePath, 'views');
-  var outputPath = path.join('.', 'app', 'assets', 'views', `${names.plural.lowercaseCamelized}`);
+  var outputPath = path.join('.', 'app', 'assets', 'views', `${inflectable.pluralCamelCasedName()}`);
 
   async.series([
     function copyViews(next) {
       fs.copy(viewsPath, outputPath, next);
     },
     function viewReplace(next) {
-      replaceContentsInDirs([outputPath], names, next);
+      replaceContentsInDirs([outputPath], inflectable, next);
     }
   ], callback);
 }
 
 
-module.exports = function(plural) {
-  var camelized = _.str.camelize(plural);
-  var singular = _.str.inflection.singularize(camelized);
-  var className = _.str.classify(singular);
-
-  var names = {
-    singular: {
-      lowercase: singular,
-      capitalized: className
-    },
-    plural: {
-      lowercase: plural,
-      lowercaseDashed: _.str.dasherize(plural),
-      lowercaseCamelized: camelized,
-      capitalized: _.str.classify(plural)
-    }
-  };
+module.exports = function(name) {
+  let inflectable = new InflectableString(name);
 
   async.series([
     function javascript(next) {
-      installJavascript(names, next);
+      installJavascript(inflectable, next);
     },
     function views(next) {
-      installViews(names, next);
+      installViews(inflectable, next);
     }
   ], function(err) {
     if (err) {
@@ -157,6 +141,6 @@ module.exports = function(plural) {
       process.exit(1);
     }
 
-    console.log(`${names.plural.capitalized} views written`);
+    console.log(`${name} views written`);
   });
 };

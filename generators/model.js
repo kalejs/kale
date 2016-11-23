@@ -1,11 +1,10 @@
 'use strict';
 
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
-var templatePath = path.join(__dirname, '..', 'templates', 'model');
-_.str = require('underscore.string');
-_.str.inflection = require('inflection');
+const _ = require('lodash');
+const fs = require('fs');
+const InflectableString = require('./support/inflectableString');
+const path = require('path');
+const templatePath = path.join(__dirname, '..', 'templates', 'model');
 
 function _template(name) {
   return fs.readFileSync(path.join(templatePath, name), 'utf8');
@@ -20,8 +19,8 @@ function _exists(path) {
   }
 }
 
-function _generateMigration(tableName) {
-  var name = `create_${tableName}`;
+function _generateMigration(inflectable) {
+  var name = `create_${inflectable.pluralUnderscoredName()}`;
   var migrationGenerator = require('./migration');
   var migrationDir = path.join(process.cwd(), 'db', 'migrations');
 
@@ -36,18 +35,19 @@ function _generateMigration(tableName) {
       return _.endsWith(filename, `${name}.js`);
     });
 
-    fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(tableName));
+    fs.writeFileSync(path.join(migrationDir, file), _migrationTemplate(inflectable));
   });
 }
 
-function _migrationTemplate(tableName) {
-  return _template('migration.js').replace(/kale_records/g, tableName);
+function _migrationTemplate(inflectable) {
+  return _template('migration.js')
+    .replace(/kale_records/g, inflectable.pluralUnderscoredName());
 }
 
-function _modelTemplate(className, tableName) {
+function _modelTemplate(inflectable) {
   return _template('model.js')
-    .replace(/KaleRecord/g, className)
-    .replace(/kale_records/g, tableName);
+    .replace(/KaleRecord/g, inflectable.className())
+    .replace(/kale_records/g, inflectable.pluralUnderscoredName());
 }
 
 function _indexTemplate(dir) {
@@ -70,19 +70,16 @@ function _indexTemplate(dir) {
 }
 
 module.exports = function(name) {
-  var className = _.str.classify(name);
-  var underscored = _.str.underscored(name);
-  var camelized = _.str.camelize(underscored);
-  var tableName = _.str.inflection.pluralize(underscored);
-  var modelsDir = path.join('.', 'app', 'models');
+  let inflectable = new InflectableString(name);
+  let modelsDir = path.join('.', 'app', 'models');
 
-  var filePath = path.join(modelsDir, camelized + '.js');
-  var indexPath = path.join(modelsDir, 'index.js');
+  let filePath = path.join(modelsDir, inflectable.camelCasedName() + '.js');
+  let indexPath = path.join(modelsDir, 'index.js');
 
-  fs.writeFileSync(filePath, _modelTemplate(className, tableName));
+  fs.writeFileSync(filePath, _modelTemplate(inflectable));
   fs.writeFileSync(indexPath, _indexTemplate(modelsDir));
-  _generateMigration(tableName);
+  _generateMigration(inflectable);
 
-  console.log(`${className} model written to ${filePath}`);
+  console.log(`Model written to ${filePath}`);
   process.exit(0);
 };

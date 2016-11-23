@@ -71,9 +71,8 @@ function _writeRoutes(inflectable) {
 module.exports = function(name, options) {
   let inflectable = new InflectableString(name);
   let controllersDir = path.join('.', 'app', 'controllers');
-  let filePath = path.join(controllersDir, camelized + '.js');
+  let filePath = path.join(controllersDir, inflectable.pluralCamelCasedName() + '.js');
   let indexPath = path.join(controllersDir, 'index.js');
-
   let template;
 
   if (options.empty) {
@@ -89,5 +88,5 @@ module.exports = function(name, options) {
     _writeRoutes(inflectable);
   }
 
-  console.log(`${camelized} controller written to ${filePath}`);
+  console.log(`Controller written to ${filePath}`);
 };
