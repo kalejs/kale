@@ -72,7 +72,6 @@ function _writeRoutes(camelized) {
   fs.writeFileSync(routesPath, lines.join('\n'));
 }
 
-
 module.exports = function(plural, options) {
   let camelized = _.str.camelize(plural);
   let singular = _.str.inflection.singularize(camelized);

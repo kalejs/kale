@@ -1,11 +1,11 @@
 'use strict';
 
-var async = require('async');
-var exec = require('child_process').exec;
-var fs = require('fs-extra');
-var path = require('path');
-var s = require('underscore.string');
-var templatePath = path.join(__dirname, '..', 'templates', 'app');
+const async = require('async');
+const exec = require('child_process').exec;
+const fs = require('fs-extra');
+const InflectableString = require('./support/inflectableString');
+const path = require('path');
+const templatePath = path.join(__dirname, '..', 'templates', 'app');
 
 function copyAppTemplate(appPath, callback) {
   fs.copy(templatePath, appPath, callback);
@@ -69,9 +69,8 @@ function replaceAllPlaceholdersWithAppName(appPath, appName, callback) {
 }
 
 function replacePlaceholderWithAppName(filename, appName, callback) {
-  var underscored = s.underscored(appName);
-  var dashed = s.dasherize(underscored);
   var contents;
+  appName = new InflectableString(appName);
 
   async.series([
     function readFile(next) {
@@ -82,9 +81,9 @@ function replacePlaceholderWithAppName(filename, appName, callback) {
     },
     function writeFile(next) {
       var replacedContent = contents
-        .replaceAll('kale_records', underscored)
-        .replaceAll('KALE_APP_NAME', appName)
-        .replaceAll('KALE_DASHERIZED_NAME', dashed);
+        .replaceAll('kale_records', appName.pluralUnderscoredName())
+        .replaceAll('KALE_APP_NAME', appName.constantName)
+        .replaceAll('kale-dasherized-name', appName.dasherizedName);
 
       fs.writeFile(filename, replacedContent, next);
     }
