@@ -1,11 +1,10 @@
 'use strict';
 
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
-var templatePath = path.join(__dirname, '..', 'templates', 'controller');
-_.str = require('underscore.string');
-_.str.inflection = require('inflection');
+const _ = require('lodash');
+const fs = require('fs');
+const InflectableString = require('./support/inflectableString');
+const path = require('path');
+const templatePath = path.join(__dirname, '..', 'templates', 'controller');
 
 function _template(name) {
   return fs.readFileSync(path.join(templatePath, name), 'utf8');
@@ -15,13 +14,13 @@ function _emptyControllerTemplate() {
   return _template('empty.js');
 }
 
-function _controllerTemplate(className, singular, plural) {
+function _controllerTemplate(inflectable) {
   let template = _template('controller.js');
 
   return template
-    .replace(/KaleRecord/g, className)
-    .replace(/kaleRecords/g, plural)
-    .replace(/kaleRecord/g, singular);
+    .replace(/KaleRecord/g, inflectable.className())
+    .replace(/kaleRecords/g, inflectable.pluralCamelCasedName())
+    .replace(/kaleRecord/g, inflectable.camelCasedName());
 }
 
 function _indexTemplate(dir) {
@@ -42,19 +41,16 @@ function _indexTemplate(dir) {
   return template.replace('// FILES', requires.join('\n'));
 }
 
-function _routerTemplate(camelized) {
-  let dasherized = _.str.dasherize(camelized);
-  let classified = _.str.classify(dasherized);
-
+function _routerTemplate(inflectable) {
   return _template('routes.js')
-    .replace(/kale-records/g, dasherized)
-    .replace(/KaleRecords/g, classified)
-    .replace(/kaleRecords/g, camelized);
+    .replace(/kale-records/g, inflectable.pluralDasherizedName())
+    .replace(/KaleRecords/g, inflectable.pluralClassName())
+    .replace(/kaleRecords/g, inflectable.pluralCamelCasedName());
 }
 
-function _writeRoutes(camelized) {
+function _writeRoutes(inflectable) {
   let routesPath = path.join('.', 'app', 'routes.js');
-  let template = _routerTemplate(camelized);
+  let template = _routerTemplate(inflectable);
 
   let routes = fs.readFileSync(routesPath, 'utf8');
   let lines = routes.split('\n');
@@ -72,13 +68,9 @@ function _writeRoutes(camelized) {
   fs.writeFileSync(routesPath, lines.join('\n'));
 }
 
-module.exports = function(plural, options) {
-  let camelized = _.str.camelize(plural);
-  let singular = _.str.inflection.singularize(camelized);
-  let className = _.str.classify(singular);
-
+module.exports = function(name, options) {
+  let inflectable = new InflectableString(name);
   let controllersDir = path.join('.', 'app', 'controllers');
-
   let filePath = path.join(controllersDir, camelized + '.js');
   let indexPath = path.join(controllersDir, 'index.js');
 
@@ -87,14 +79,14 @@ module.exports = function(plural, options) {
   if (options.empty) {
     template = _emptyControllerTemplate();
   } else {
-    template = _controllerTemplate(className, singular, camelized);
+    template = _controllerTemplate(inflectable);
   }
 
   fs.writeFileSync(filePath, template);
   fs.writeFileSync(indexPath, _indexTemplate(controllersDir));
 
   if (!options.empty) {
-    _writeRoutes(camelized);
+    _writeRoutes(inflectable);
   }
 
   console.log(`${camelized} controller written to ${filePath}`);

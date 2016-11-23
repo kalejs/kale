@@ -66,6 +66,16 @@ class InflectableString extends String {
   }
 
   /**
+   * Alias for str.plural().camelize();
+   *
+   * Example
+   *  appNames
+   */
+  pluralCamelCasedName() {
+    return this.plural().camelize();
+  }
+
+  /**
    * Alias for str.singular().underscored();
    *
    * Example
@@ -103,5 +113,15 @@ class InflectableString extends String {
    */
   dasherizedName() {
     return this.underscoredName().dasherized();
+  }
+
+  /**
+   * Alias for this.pluralUnderscoredName().dasherized();
+   *
+   * Example
+   *  app-name
+   */
+  pluralDasherizedName() {
+    return this.pluralUnderscoredName().dasherized();
   }
 }
